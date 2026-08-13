@@ -1,0 +1,93 @@
+{% comment %}
+  Purelane's catalog product card — full variant (image, marketing pill,
+  rating, price, add-to-cart). Used by the Shop grid section; reused as-is
+  by any future section that needs the same card shape (e.g. a bonus
+  "shop by category" grid) rather than re-authoring it.
+
+  Deliberately NOT reused for the Combos rail's stacked thumbnails — those
+  are a genuinely different, simpler shape (bare image + one-line caption,
+  no price/CTA/chrome), so forcing them through this snippet would mean
+  threading a pile of "hide this part" params through a component built for
+  a different job. That thumbnail markup lives inline in purelane-combos.liquid.
+
+  Accepts:
+  - card_product: {Object} product (required — caller should skip rendering
+    entirely if this is blank rather than pass a placeholder here)
+  - section_id: {String} owning section id, for unique DOM ids
+  - lazy_load: {Boolean} default true
+
+  Handles as first-class states, not edge cases bolted on after:
+  - no featured image -> branded placeholder, not a broken <img>
+  - sold out -> pill + disabled/relabelled CTA, price still visible
+  - very long title -> no fixed-height clipping, card grows to fit
+{% endcomment %}
+{%- liquid
+  assign lazy = true
+  if lazy_load == false
+    assign lazy = false
+  endif
+
+  assign rating = card_product.metafields.custom.rating.value
+  assign review_count = card_product.metafields.custom.review_count.value
+  assign custom_badge = card_product.metafields.custom.badge.value
+  assign variant = card_product.selected_or_first_available_variant
+  assign form_id = 'purelane-shop-form-' | append: section_id | append: '-' | append: card_product.id
+-%}
+<article class="purelane-card purelane-glass purelane-rv">
+  <div class="purelane-shot">
+    {%- if card_product.available == false -%}
+      <span class="purelane-pill purelane-pill--soldout">{{ 'purelane.shop.sold_out' | t }}</span>
+    {%- elsif custom_badge != blank -%}
+      <span class="purelane-pill">{{ custom_badge }}</span>
+    {%- endif -%}
+
+    {%- if card_product.featured_media -%}
+      {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
+      <img
+        srcset="
+          {{ card_product.featured_media | image_url: width: 165 }} 165w,
+          {{ card_product.featured_media | image_url: width: 330 }} 330w,
+          {{ card_product.featured_media | image_url: width: 500 }} 500w
+        "
+        src="{{ card_product.featured_media | image_url: width: 330 }}"
+        sizes="(min-width: 860px) 220px, 45vw"
+        alt="{{ card_product.featured_media.alt | default: card_product.title | escape }}"
+        width="{{ card_product.featured_media.width }}"
+        height="{{ card_product.featured_media.height }}"
+        {% unless lazy == false %}loading="lazy"{% endunless %}
+      >
+      {% comment %}theme-check-enable ImgLazyLoading{% endcomment %}
+    {%- else -%}
+      <div class="purelane-shot__placeholder" role="img" aria-label="{{ card_product.title | escape }}">
+        {{ 'product-1' | placeholder_svg_tag: 'purelane-placeholder-svg' }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <h4>{{ card_product.title | escape }}</h4>
+
+  {%- if rating != blank -%}
+    <div class="purelane-rate">
+      <b>&#9733; {{ rating }}</b>
+      {%- if review_count != blank %} &middot; {{ 'purelane.shop.reviews_count' | t: count: review_count }}{% endif -%}
+    </div>
+  {%- endif -%}
+
+  {% render 'purelane-price', product: card_product, variant: 'card' %}
+
+  {%- form 'product', card_product, id: form_id, class: 'purelane-card-form' -%}
+    <input type="hidden" name="id" value="{{ variant.id }}">
+    <button
+      type="submit"
+      name="add"
+      class="purelane-btn purelane-btn-ghost purelane-btn-sm"
+      {% if variant.available == false %}disabled aria-disabled="true"{% endif %}
+    >
+      {%- if variant.available -%}
+        {{ 'purelane.shop.add_to_cart' | t }}
+      {%- else -%}
+        {{ 'purelane.shop.sold_out' | t }}
+      {%- endif -%}
+    </button>
+  {%- endform -%}
+</article>

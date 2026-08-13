@@ -1,0 +1,238 @@
+/*
+  Purelane shared foundation: fonts, design tokens, and the small set of
+  utility classes every purelane-* section composes from (headings, buttons,
+  glass panels, reveal-on-scroll, section shell). Loaded once per page that
+  uses a purelane-* section; section-specific rules live in their own files.
+
+  Self-hosted variable fonts (Outfit, Inter) replace the prototype's Google
+  Fonts <link> — removes a render-blocking third-party origin. Both are
+  single-file variable fonts covering their full weight range, so one
+  @font-face per family with a weight range is correct (not one per weight).
+*/
+
+@font-face {
+  font-family: 'Purelane Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('purelane-inter.woff2') format('woff2-variations'), url('purelane-inter.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Purelane Outfit';
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url('purelane-outfit.woff2') format('woff2-variations'), url('purelane-outfit.woff2') format('woff2');
+}
+
+:root {
+  --purelane-ink: #17102b;
+  --purelane-deep: #241a3d;
+  --purelane-brand: #4b3a8f;
+  --purelane-brand-lt: #6b55b8;
+  --purelane-paper: #ece6f7;
+  --purelane-paper-2: rgba(236, 230, 247, 0.74);
+  --purelane-paper-3: rgba(236, 230, 247, 0.52);
+  --purelane-accent: #f0a03c;
+  --purelane-accent-2: #c9761d;
+  --purelane-surface: #faf7fd;
+  --purelane-g-bg: linear-gradient(158deg, rgba(236, 230, 247, 0.15), rgba(75, 58, 143, 0.2) 58%, rgba(23, 16, 43, 0.28));
+  --purelane-g-line: rgba(236, 230, 247, 0.22);
+  --purelane-g-shadow: 0 26px 74px rgba(18, 12, 34, 0.44);
+  --purelane-g-inset: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  --purelane-r: 26px;
+  --purelane-r-sm: 16px;
+  --purelane-maxw: 1180px;
+  --purelane-sec-y: 34px;
+  --purelane-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --purelane-sec-y: 22px;
+  }
+}
+
+.purelane-scope {
+  font-family: 'Purelane Inter', system-ui, -apple-system, sans-serif;
+  color: var(--purelane-paper);
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+}
+
+.purelane-scope *,
+.purelane-scope *::before,
+.purelane-scope *::after {
+  box-sizing: border-box;
+}
+
+.purelane-scope img,
+.purelane-scope svg {
+  display: block;
+  max-width: 100%;
+}
+
+.purelane-scope a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.purelane-scope button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+.purelane-scope :focus-visible {
+  outline: 2px solid var(--purelane-accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- type ---------- */
+.purelane-scope .d1,
+.purelane-scope .d2,
+.purelane-scope .d3,
+.purelane-scope .d4 {
+  font-family: 'Purelane Outfit', system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.018em;
+  font-weight: 800;
+  line-height: 0.87;
+  color: var(--purelane-surface);
+}
+.purelane-scope .d1 { font-size: clamp(48px, 8.6vw, 112px); }
+.purelane-scope .d2 { font-size: clamp(30px, 4.6vw, 54px); line-height: 0.94; }
+.purelane-scope .d3 { font-size: clamp(21px, 2.5vw, 30px); line-height: 1.04; font-weight: 700; letter-spacing: -0.01em; }
+.purelane-scope .d4 { font-size: clamp(16px, 1.6vw, 19px); line-height: 1.14; font-weight: 700; letter-spacing: 0.005em; }
+.purelane-scope .lime { color: var(--purelane-accent); }
+.purelane-scope .lede { font-size: clamp(15px, 1.35vw, 17.5px); color: var(--purelane-paper-2); max-width: 44ch; }
+.purelane-scope .body-s { font-size: 14.5px; color: var(--purelane-paper-2); line-height: 1.66; }
+.purelane-scope .kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--purelane-paper-3); }
+.purelane-scope .wrap { max-width: var(--purelane-maxw); margin: 0 auto; padding: 0 18px; }
+
+/* ---------- section shell ---------- */
+.purelane-sec {
+  position: relative;
+  padding: var(--purelane-sec-y) 0;
+  background: var(--purelane-scene, linear-gradient(178deg, #067c71 0%, #00625d 30%, #014e4a 64%, #023c39 100%));
+}
+.purelane-sec-pad { padding: clamp(26px, 3.4vw, 40px); }
+.purelane-panel-head { text-align: center; margin-bottom: 26px; }
+.purelane-panel-head .d2 { margin-bottom: 12px; }
+.purelane-panel-head .purelane-rule { margin: 0 auto; justify-content: center; max-width: 240px; }
+.purelane-panel-head .purelane-rule i:first-child { background: linear-gradient(90deg, transparent, rgba(236, 230, 247, 0.44)); }
+
+.purelane-rule { display: flex; align-items: center; gap: 13px; margin: 0 0 20px; max-width: 270px; }
+.purelane-rule i { height: 1px; flex: 1; background: linear-gradient(90deg, rgba(236, 230, 247, 0.44), transparent); }
+.purelane-rule svg { width: 16px; height: 16px; color: var(--purelane-accent); flex: 0 0 auto; }
+
+/* ---------- glass panels ---------- */
+.purelane-glass {
+  background: var(--purelane-g-bg);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--purelane-g-line);
+  border-radius: var(--purelane-r);
+  box-shadow: var(--purelane-g-shadow), var(--purelane-g-inset);
+  position: relative;
+  overflow: hidden;
+}
+.purelane-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.16), transparent 30%, transparent 72%, rgba(240, 160, 60, 0.07));
+}
+.purelane-glass-2 {
+  background: linear-gradient(158deg, rgba(236, 230, 247, 0.1), rgba(0, 48, 46, 0.22));
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  border: 1px solid rgba(236, 230, 247, 0.16);
+  border-radius: var(--purelane-r);
+  box-shadow: 0 18px 48px rgba(18, 12, 34, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  position: relative;
+  overflow: hidden;
+}
+@media (max-width: 760px) {
+  .purelane-glass { backdrop-filter: blur(16px) saturate(140%); -webkit-backdrop-filter: blur(16px) saturate(140%); }
+  .purelane-glass-2 { backdrop-filter: blur(12px) saturate(130%); -webkit-backdrop-filter: blur(12px) saturate(130%); }
+  .purelane-sec-pad { padding: 22px 18px; }
+}
+
+/* ---------- buttons ---------- */
+.purelane-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  transition: 0.35s var(--purelane-ease);
+  white-space: nowrap;
+}
+.purelane-btn svg { width: 15px; height: 15px; flex: 0 0 auto; }
+.purelane-btn-primary {
+  background: linear-gradient(135deg, var(--purelane-accent-2), #5d8d1c);
+  color: #08211a;
+  box-shadow: 0 12px 30px rgba(201, 118, 29, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+.purelane-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(201, 118, 29, 0.44), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+.purelane-btn-ghost {
+  background: rgba(236, 230, 247, 0.1);
+  border: 1px solid rgba(236, 230, 247, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--purelane-surface);
+}
+.purelane-btn-ghost:hover { background: rgba(236, 230, 247, 0.18); transform: translateY(-2px); }
+.purelane-btn-sm { height: 38px; padding: 0 18px; font-size: 11px; letter-spacing: 0.14em; }
+.purelane-btn[disabled],
+.purelane-btn[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none !important;
+}
+
+/* ---------- reveal on scroll ---------- */
+.purelane-rv {
+  opacity: 0;
+  transform: translateY(30px);
+  filter: blur(7px);
+  transition: opacity 0.95s var(--purelane-ease), transform 0.95s var(--purelane-ease), filter 0.95s var(--purelane-ease);
+}
+.purelane-rv.purelane-in { opacity: 1; transform: none; filter: none; }
+.purelane-rv-d1 { transition-delay: 0.09s; }
+.purelane-rv-d2 { transition-delay: 0.18s; }
+.purelane-rv-d3 { transition-delay: 0.27s; }
+.purelane-rv-d4 { transition-delay: 0.36s; }
+.purelane-rv-d5 { transition-delay: 0.45s; }
+
+/* ---------- image / product art ---------- */
+.purelane-pimg {
+  display: block;
+  object-fit: contain;
+  object-position: center bottom;
+  flex: 0 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .purelane-scope *,
+  .purelane-scope *::before,
+  .purelane-scope *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .purelane-rv { opacity: 1; transform: none; filter: none; }
+}

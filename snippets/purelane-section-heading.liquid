@@ -1,0 +1,38 @@
+{% comment %}
+  Renders the kicker + display heading + rule-divider pattern shared by
+  every purelane-* section (Shop, Combos, Bundles, Reviews aggregate line, etc.)
+
+  Accepts:
+  - kicker: {String} small uppercase label above the heading (optional)
+  - heading: {String} main heading text, rendered as .d2 (required)
+  - lede: {String} optional supporting paragraph below the rule
+  - align_center: {Boolean} centers the block and the rule (default: true)
+  - heading_tag: {String} html tag for the heading, default 'h2'
+
+  Usage:
+  {% render 'purelane-section-heading', kicker: block.settings.kicker, heading: block.settings.heading %}
+{% endcomment %}
+{%- liquid
+  assign tag = heading_tag | default: 'h2'
+  assign center = true
+  if align_center == false
+    assign center = false
+  endif
+-%}
+<div class="{% if center %}purelane-panel-head{% endif %} purelane-rv">
+  {%- if kicker != blank -%}
+    <span class="purelane-kicker">{{ kicker }}</span>
+  {%- endif -%}
+  <{{ tag }} class="d2" {% if heading_style %}style="{{ heading_style }}"{% endif %}>{{ heading }}</{{ tag }}>
+  <div class="purelane-rule">
+    <i></i>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"></path>
+      <path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"></path>
+    </svg>
+    <i></i>
+  </div>
+  {%- if lede != blank -%}
+    <p class="lede" style="margin:14px auto 0">{{ lede }}</p>
+  {%- endif -%}
+</div>

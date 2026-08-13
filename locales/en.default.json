@@ -528,5 +528,36 @@
       "send_on": "YYYY-MM-DD",
       "send_on_label": "Send on (optional)"
     }
+  },
+  "purelane": {
+    "price": {
+      "save_amount": "Save {{ amount }}"
+    },
+    "hero": {
+      "single_bottle": "Single bottle",
+      "any_n_products": "Any {{ count }} products",
+      "off_percent": "{{ percent }}% off",
+      "save_amount": "Save {{ amount }}",
+      "show_slide": "Show slide {{ index }}"
+    },
+    "shop": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "view_details": "View details",
+      "reviews_count": "{{ count }} reviews"
+    },
+    "combos": {
+      "swipe_hint": "Swipe for more combos",
+      "shop_bundle": "Shop bundle",
+      "products_count": "{{ count }} products"
+    },
+    "bundles": {
+      "per_product_note": "Flat {{ amount }} per product",
+      "build_this_box": "Build this box"
+    },
+    "reviews": {
+      "aggregate_rating_html": "<b>{{ rating }}</b> from {{ count }} reviews",
+      "loved_by_html": "Loved by <b>{{ count }}</b> homes"
+    }
   }
 }

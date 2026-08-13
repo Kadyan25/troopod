@@ -1,0 +1,67 @@
+{% comment %}
+  Renders Purelane's price markup (current price, strikethrough compare-at,
+  optional savings badge) in one of the three shapes used across sections.
+  One implementation, three brand-accurate outputs — avoids hand-rolling the
+  same money math three times.
+
+  Accepts:
+  - price: {Number|String} current price, in the shop's currency subunit-free
+    decimal form (e.g. 499), OR pass `product` instead to read live values.
+  - compare_at_price: {Number|String} original price before discount (optional)
+  - product: {Object} a real product/variant — when passed, price and
+    compare_at_price are read from it instead of the explicit params
+    (use this on the Shop grid; use explicit price/compare_at on Combos and
+    Bundle tiers, since those are flat metaobject-defined prices, not a
+    single product's own price)
+  - variant: {String} 'card' (.pr, %-off badge) | 'combo' (.prow, ₹-savings
+    badge) | 'tier' (.price, no badge). Default 'card'.
+
+  Usage:
+  {% render 'purelane-price', product: card_product, variant: 'card' %}
+  {% render 'purelane-price', price: combo.fields.price.value, compare_at_price: combo.fields.compare_at_price.value, variant: 'combo' %}
+{% endcomment %}
+{%- liquid
+  assign display_variant = variant | default: 'card'
+
+  if product
+    assign target = product.selected_or_first_available_variant | default: product
+    assign resolved_price = target.price
+    assign resolved_compare = target.compare_at_price
+  else
+    assign resolved_price = price
+    assign resolved_compare = compare_at_price
+  endif
+
+  assign has_discount = false
+  if resolved_compare > resolved_price
+    assign has_discount = true
+    assign savings = resolved_compare | minus: resolved_price
+    assign savings_money = savings | money
+    assign percent_off = savings | times: 100.0 | divided_by: resolved_compare | round
+  endif
+-%}
+{%- case display_variant -%}
+  {%- when 'combo' -%}
+    <div class="purelane-prow">
+      <strong>{{ resolved_price | money }}</strong>
+      {%- if has_discount -%}
+        <s>{{ resolved_compare | money }}</s>
+        <em>{{ 'purelane.price.save_amount' | t: amount: savings_money }}</em>
+      {%- endif -%}
+    </div>
+  {%- when 'tier' -%}
+    <div class="purelane-tier-price">
+      {{ resolved_price | money }}
+      {%- if has_discount -%}
+        <s>{{ resolved_compare | money }}</s>
+      {%- endif -%}
+    </div>
+  {%- else -%}
+    <div class="purelane-pr">
+      <strong>{{ resolved_price | money }}</strong>
+      {%- if has_discount -%}
+        <s>{{ resolved_compare | money }}</s>
+        <em>{{ percent_off }}% off</em>
+      {%- endif -%}
+    </div>
+{%- endcase -%}
