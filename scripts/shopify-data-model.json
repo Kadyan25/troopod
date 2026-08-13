@@ -1,0 +1,73 @@
+{
+  "_comment": "Manifest of custom data this theme depends on. Consumed by provision-shopify-data.mjs. Field types use Shopify's Admin API metafield/metaobject type names directly. Edit here, not in the admin UI, so the repo stays the source of truth.",
+
+  "product_metafields": [
+    {
+      "namespace": "custom",
+      "key": "rating",
+      "name": "Rating",
+      "description": "Average star rating (0-5) shown on the shop card. No reviews app is wired up for this build — set by hand or backfill later from a real reviews platform.",
+      "type": "number_decimal"
+    },
+    {
+      "namespace": "custom",
+      "key": "review_count",
+      "name": "Review count",
+      "description": "Number of reviews backing the rating above.",
+      "type": "number_integer"
+    },
+    {
+      "namespace": "custom",
+      "key": "badge",
+      "name": "Merchandising badge",
+      "description": "Free-text pill shown on the shop card, e.g. \"Best seller\", \"Top rated\", \"New\". Independent of the sold-out badge, which is computed from stock automatically.",
+      "type": "single_line_text_field"
+    }
+  ],
+
+  "metaobjects": [
+    {
+      "type": "combo",
+      "name": "Combo",
+      "description": "A curated multi-product bundle at a fixed promotional price, shown in the Best-selling combos rail.",
+      "fieldDefinitions": [
+        { "key": "title", "name": "Title", "type": "single_line_text_field", "required": true },
+        { "key": "products", "name": "Products", "type": "list.product_reference", "required": true, "validations": [{ "name": "min", "value": "2" }, { "name": "max", "value": "3" }] },
+        { "key": "item_captions", "name": "Item captions", "type": "list.single_line_text_field", "description": "One short caption per product, same order as Products, e.g. \"Cuts grease instantly\"." },
+        { "key": "price", "name": "Price", "type": "money", "required": true },
+        { "key": "compare_at_price", "name": "Compare-at price", "type": "money" },
+        { "key": "savings_label", "name": "Savings label", "type": "single_line_text_field", "description": "Free text, e.g. \"You save ₹398\" or \"Biggest saving\"." },
+        { "key": "flag", "name": "Flag badge", "type": "single_line_text_field", "description": "Optional, e.g. \"Most popular\" or \"Best value\"." },
+        { "key": "description", "name": "Description", "type": "multi_line_text_field" },
+        { "key": "featured", "name": "Featured", "type": "boolean", "description": "Applies the highlighted/hero-combo visual treatment." }
+      ]
+    },
+    {
+      "type": "bundle_tier",
+      "name": "Bundle tier",
+      "description": "One of the fixed-price, pick-N-products pricing tiers shown in the Bundles section.",
+      "fieldDefinitions": [
+        { "key": "tag", "name": "Tag", "type": "single_line_text_field", "required": true, "description": "e.g. \"Starter\", \"Most popular\", \"Whole home\"." },
+        { "key": "product_count", "name": "Product count", "type": "number_integer", "required": true },
+        { "key": "price", "name": "Price", "type": "money", "required": true },
+        { "key": "compare_at_price", "name": "Compare-at price", "type": "money" },
+        { "key": "features", "name": "Features", "type": "list.single_line_text_field" },
+        { "key": "sample_products", "name": "Sample products", "type": "list.product_reference", "description": "Small preview thumbnails shown above the tier card." },
+        { "key": "featured", "name": "Featured", "type": "boolean" },
+        { "key": "cta_label", "name": "CTA label", "type": "single_line_text_field" }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "description": "One customer review entry for the Reviews rail marquee.",
+      "fieldDefinitions": [
+        { "key": "stars", "name": "Stars", "type": "number_integer", "required": true, "validations": [{ "name": "min", "value": "1" }, { "name": "max", "value": "5" }] },
+        { "key": "headline", "name": "Headline", "type": "single_line_text_field", "required": true },
+        { "key": "body", "name": "Body", "type": "multi_line_text_field", "required": true },
+        { "key": "author_name", "name": "Author name", "type": "single_line_text_field", "required": true },
+        { "key": "product_label", "name": "Product label", "type": "single_line_text_field", "description": "e.g. \"Laundry detergent\"." }
+      ]
+    }
+  ]
+}

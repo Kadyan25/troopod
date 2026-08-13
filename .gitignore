@@ -12,6 +12,9 @@ STATE.md
 # Reference asset from the assignment, not shippable theme code
 purelane-homepage.html
 
+# Secrets — never committed
+.env
+
 # Shopify CLI / theme
 .shopify/
 config.yml
