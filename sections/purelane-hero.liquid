@@ -1,0 +1,176 @@
+{{ 'purelane-base.css' | asset_url | stylesheet_tag }}
+{{ 'purelane-hero.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'purelane-reveal.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'purelane-hero.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign slide_blocks = section.blocks | where: 'type', 'hero_slide'
+  assign badge_blocks = section.blocks | where: 'type', 'badge'
+-%}
+
+<section
+  class="purelane-scope purelane-hero"
+  data-purelane-hero
+  id="purelane-hero-{{ section.id }}"
+>
+  <div class="purelane-hero-grid">
+
+    {%- if badge_blocks.size > 0 -%}
+      <div class="purelane-badges purelane-glass-2" aria-label="Product promises">
+        {%- for block in badge_blocks -%}
+          <div class="purelane-badge" {{ block.shopify_attributes }}>
+            <span class="purelane-bi">{{ block.settings.icon }}</span>
+            <span>{{ block.settings.label }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="purelane-hero-copy">
+      {%- if section.settings.heading != blank -%}
+        <h1 class="d1 purelane-rv purelane-in">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      <div class="purelane-rule purelane-rv purelane-rv-d1">
+        <i></i>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"></path><path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"></path></svg>
+        <i></i>
+      </div>
+      {%- if section.settings.lede != blank -%}
+        <p class="lede purelane-rv purelane-rv-d2">{{ section.settings.lede }}</p>
+      {%- endif -%}
+      <div class="purelane-hero-cta purelane-rv purelane-rv-d3">
+        {%- if section.settings.primary_cta_label != blank -%}
+          <a class="purelane-btn purelane-btn-primary" href="{{ section.settings.primary_cta_link | default: '#' }}">
+            {{ section.settings.primary_cta_label }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6"></path></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.secondary_cta_label != blank -%}
+          <a class="purelane-btn purelane-btn-ghost" href="{{ section.settings.secondary_cta_link | default: '#' }}">{{ section.settings.secondary_cta_label }}</a>
+        {%- endif -%}
+      </div>
+
+      {%- if badge_blocks.size > 0 -%}
+        <div class="purelane-badgestrip purelane-rv purelane-rv-d4">
+          {%- for block in badge_blocks -%}
+            <div class="purelane-glass-2">
+              <span aria-hidden="true">{{ block.settings.icon }}</span>
+              {{ block.settings.label_short | default: block.settings.label }}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if slide_blocks.size > 0 -%}
+      <div class="purelane-hero-prod" id="purelaneHeroProd-{{ section.id }}">
+        <div class="purelane-hstage" id="purelaneHstage-{{ section.id }}" data-purelane-hstage>
+          {%- for block in slide_blocks -%}
+            {%- liquid
+              assign products = block.settings.products
+              assign layer_classes = 'a,b,c' | split: ','
+            -%}
+            <div
+              class="purelane-hslide {% if forloop.first %}purelane-on{% endif %} purelane-hs{{ products.size }}"
+              data-index="{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
+              {%- for product in products limit: 3 -%}
+                {%- liquid
+                  assign layer = layer_classes[forloop.index0]
+                  assign depth = 'd' | append: forloop.index
+                -%}
+                {%- if product.featured_media -%}
+                  <img
+                    class="purelane-hp purelane-{{ layer }} purelane-{{ depth }}"
+                    src="{{ product.featured_media | image_url: width: 600 }}"
+                    alt="{{ product.featured_media.alt | default: product.title | escape }}"
+                    width="{{ product.featured_media.width }}"
+                    height="{{ product.featured_media.height }}"
+                    loading="{% if forloop.parentloop.first %}eager{% else %}lazy{% endif %}"
+                  >
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if block.settings.price_label != blank -%}
+                <div class="purelane-glass-2 purelane-ptag">
+                  <span class="purelane-lbl">{{ block.settings.price_label }}</span>
+                  <span class="purelane-val">
+                    <strong>{{ block.settings.price | money }}</strong>
+                    {%- if block.settings.compare_at_price > block.settings.price -%}
+                      <s>{{ block.settings.compare_at_price | money }}</s>
+                    {%- endif -%}
+                  </span>
+                  {%- if block.settings.savings_label != blank -%}
+                    <span class="purelane-cut">{{ block.settings.savings_label }}</span>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+        {%- if slide_blocks.size > 1 -%}
+          <div class="purelane-hdots" id="purelaneHdots-{{ section.id }}">
+            {%- for block in slide_blocks -%}
+              <button
+                type="button"
+                class="{% if forloop.first %}purelane-on{% endif %}"
+                aria-label="{{ 'purelane.hero.show_slide' | t: index: forloop.index }}"
+                data-index="{{ forloop.index0 }}"
+              ></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Purelane: Hero",
+  "class": "purelane-hero-section",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Clean That Lasts" },
+    { "type": "textarea", "id": "lede", "label": "Supporting copy", "default": "Homecare that works on the toughest grime, made from plants. Kind to your home, your family and the world outside it." },
+    { "type": "text", "id": "primary_cta_label", "label": "Primary button label", "default": "Shop now" },
+    { "type": "url", "id": "primary_cta_link", "label": "Primary button link" },
+    { "type": "text", "id": "secondary_cta_label", "label": "Secondary button label", "default": "How it works" },
+    { "type": "url", "id": "secondary_cta_link", "label": "Secondary button link" }
+  ],
+  "blocks": [
+    {
+      "type": "hero_slide",
+      "name": "Product slide",
+      "settings": [
+        { "type": "product_list", "id": "products", "label": "Products in this slide", "limit": 3, "info": "1 product shows a single bottle; 2 or 3 stack automatically, matching the prototype's slide layouts." },
+        { "type": "text", "id": "price_label", "label": "Price tag label", "default": "Single bottle" },
+        { "type": "number", "id": "price", "label": "Slide price" },
+        { "type": "number", "id": "compare_at_price", "label": "Slide compare-at price" },
+        { "type": "text", "id": "savings_label", "label": "Savings badge text", "info": "Free text, e.g. \"33% off\" or \"Save ₹249\"" }
+      ]
+    },
+    {
+      "type": "badge",
+      "name": "Trust badge",
+      "settings": [
+        { "type": "html", "id": "icon", "label": "Icon (inline SVG)", "info": "Paste a small inline <svg>...</svg>. Kept as raw HTML so any icon set works." },
+        { "type": "text", "id": "label", "label": "Label", "default": "Plant powered" },
+        { "type": "text", "id": "label_short", "label": "Short label (mobile strip)", "info": "Defaults to Label if left blank" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane: Hero",
+      "blocks": [
+        { "type": "hero_slide" },
+        { "type": "badge", "settings": { "label": "Plant powered", "label_short": "Plant powered" } },
+        { "type": "badge", "settings": { "label": "Safe for kids & pets", "label_short": "Kids & pet safe" } },
+        { "type": "badge", "settings": { "label": "Zero harsh chemicals", "label_short": "Zero harsh chem" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

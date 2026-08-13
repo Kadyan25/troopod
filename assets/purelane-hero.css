@@ -1,0 +1,161 @@
+/* Purelane Hero — ported 1:1 from purelane-homepage.html:945-997 + its .hero/.badges/.hstage rules */
+
+.purelane-hero {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding: 150px 0 var(--purelane-sec-y);
+  background: linear-gradient(178deg, #1ea38d 0%, #0b8578 22%, #017069 48%, #4b3a8f 74%, #01524e 100%);
+}
+.purelane-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(102deg, rgba(1, 45, 42, 0.68) 0%, rgba(1, 45, 42, 0.4) 30%, rgba(1, 45, 42, 0.1) 52%, transparent 66%);
+}
+@media (max-width: 900px) {
+  .purelane-hero::before {
+    background: linear-gradient(180deg, rgba(1, 45, 42, 0.44) 0%, rgba(1, 45, 42, 0.22) 34%, rgba(1, 40, 38, 0.6) 100%);
+  }
+}
+.purelane-hero-grid { max-width: var(--purelane-maxw); margin: 0 auto; padding: 0 18px; width: 100%; position: relative; z-index: 2; }
+.purelane-hero-copy { max-width: 600px; position: relative; z-index: 3; }
+.purelane-hero h1 { margin-bottom: 20px; text-shadow: 0 6px 40px rgba(2, 20, 19, 0.55); }
+.purelane-hero-cta { display: flex; gap: 11px; flex-wrap: wrap; margin-top: 26px; }
+
+.purelane-hero-prod {
+  position: absolute;
+  right: 2%;
+  bottom: 28px;
+  width: min(50vw, 560px);
+  z-index: 2;
+  filter: drop-shadow(0 34px 54px rgba(2, 20, 19, 0.6));
+}
+@media (max-width: 1200px) {
+  .purelane-hero-copy { max-width: 470px; }
+  .purelane-hero-prod { width: min(44vw, 440px); right: 3%; }
+}
+@media (max-width: 900px) {
+  .purelane-hero { align-items: flex-end; padding-top: 132px; }
+  .purelane-hero-copy { max-width: none; }
+  .purelane-hero-prod { position: relative; right: auto; bottom: auto; width: min(88vw, 420px); margin: 20px auto 0; }
+}
+
+/* badge rail (desktop) */
+.purelane-badges {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 96px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 8px;
+  border-radius: 20px;
+}
+.purelane-badge { text-align: center; padding: 11px 4px; }
+.purelane-badge + .purelane-badge { border-top: 1px solid rgba(236, 230, 247, 0.14); }
+.purelane-bi {
+  width: 38px;
+  height: 38px;
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(236, 230, 247, 0.1);
+  border: 1px solid rgba(236, 230, 247, 0.22);
+  color: var(--purelane-accent);
+}
+.purelane-bi svg { width: 19px; height: 19px; }
+.purelane-badge span { display: block; font-size: 8.5px; font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase; color: var(--purelane-paper-2); line-height: 1.34; }
+@media (max-width: 900px) { .purelane-badges { display: none; } }
+
+/* badge strip (mobile) */
+.purelane-badgestrip { display: flex; gap: 8px; margin-top: 24px; }
+.purelane-badgestrip > div { flex: 1; text-align: center; padding: 11px 6px; border-radius: 14px; font-size: 8.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purelane-paper-2); line-height: 1.3; }
+.purelane-badgestrip svg { width: 18px; height: 18px; margin: 0 auto 6px; color: var(--purelane-accent); }
+@media (min-width: 901px) { .purelane-badgestrip { display: none; } }
+
+/* hero product stage: 1 -> 2 -> 3 with price tag */
+.purelane-hstage { position: relative; width: 100%; height: clamp(380px, 74svh, 680px); }
+.purelane-hslide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-right: 2%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.85s var(--purelane-ease);
+}
+.purelane-hslide.purelane-on { opacity: 1; pointer-events: auto; }
+.purelane-hp {
+  position: relative;
+  width: auto;
+  flex: 0 0 auto;
+  object-fit: contain;
+  object-position: center bottom;
+  opacity: 0;
+  transform: translateY(28px) scale(0.94);
+  transition: opacity 0.8s var(--purelane-ease), transform 0.8s var(--purelane-ease);
+  filter: drop-shadow(0 26px 40px rgba(1, 22, 20, 0.66));
+}
+.purelane-hslide.purelane-on .purelane-hp { opacity: 1; transform: none; }
+.purelane-hslide.purelane-on .purelane-hp.purelane-d1 { transition-delay: 0.06s; }
+.purelane-hslide.purelane-on .purelane-hp.purelane-d2 { transition-delay: 0.3s; }
+.purelane-hslide.purelane-on .purelane-hp.purelane-d3 { transition-delay: 0.54s; }
+
+.purelane-hs1 .purelane-a { height: 100%; z-index: 3; }
+.purelane-hs2 .purelane-a { height: 80%; margin-right: -8%; z-index: 1; }
+.purelane-hs2 .purelane-b { height: 97%; z-index: 3; }
+.purelane-hs3 .purelane-a { height: 75%; margin-right: -8%; z-index: 1; order: 1; }
+.purelane-hs3 .purelane-c { height: 97%; z-index: 3; order: 2; }
+.purelane-hs3 .purelane-b { height: 79%; margin-left: -8%; z-index: 2; order: 3; }
+
+.purelane-ptag {
+  position: absolute;
+  left: 0;
+  bottom: 2%;
+  z-index: 6;
+  padding: 11px 14px 12px;
+  border-radius: 16px;
+  max-width: 52%;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s var(--purelane-ease) 0.62s, transform 0.8s var(--purelane-ease) 0.62s;
+}
+.purelane-hslide.purelane-on .purelane-ptag { opacity: 1; transform: none; }
+.purelane-ptag .purelane-lbl { display: block; font-size: 9px; font-weight: 800; letter-spacing: 0.17em; text-transform: uppercase; color: var(--purelane-accent); }
+.purelane-ptag .purelane-val { display: flex; align-items: baseline; gap: 7px; margin-top: 5px; }
+.purelane-ptag .purelane-val strong { font-family: 'Purelane Outfit', sans-serif; font-size: 23px; font-weight: 800; letter-spacing: -0.02em; color: var(--purelane-surface); line-height: 1; }
+.purelane-ptag .purelane-val s { font-size: 12px; color: var(--purelane-paper-3); }
+.purelane-ptag .purelane-cut {
+  display: inline-block;
+  margin-top: 7px;
+  font-size: 8.4px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(240, 160, 60, 0.2);
+  border: 1px solid rgba(240, 160, 60, 0.38);
+  color: var(--purelane-accent);
+}
+@media (max-width: 900px) {
+  .purelane-hstage { height: clamp(300px, 44svh, 430px); }
+  .purelane-ptag { padding: 9px 12px 10px; border-radius: 14px; max-width: 58%; }
+  .purelane-ptag .purelane-val strong { font-size: 20px; }
+}
+
+.purelane-hdots { display: flex; gap: 7px; justify-content: center; align-items: center; margin-top: 8px; }
+.purelane-hdots button { width: 6px; height: 6px; padding: 0; border-radius: 50%; background: rgba(236, 230, 247, 0.28); transition: 0.4s var(--purelane-ease); }
+.purelane-hdots button.purelane-on { background: var(--purelane-accent); width: 20px; border-radius: 999px; }
+.purelane-hdots button:hover { background: rgba(236, 230, 247, 0.5); }
