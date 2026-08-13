@@ -75,19 +75,34 @@
 
   {% render 'purelane-price', product: card_product, variant: 'card' %}
 
-  {%- form 'product', card_product, id: form_id, class: 'purelane-card-form' -%}
-    <input type="hidden" name="id" value="{{ variant.id }}">
-    <button
-      type="submit"
-      name="add"
-      class="purelane-btn purelane-btn-ghost purelane-btn-sm"
-      {% if variant.available == false %}disabled aria-disabled="true"{% endif %}
-    >
-      {%- if variant.available -%}
-        {{ 'purelane.shop.add_to_cart' | t }}
-      {%- else -%}
-        {{ 'purelane.shop.sold_out' | t }}
-      {%- endif -%}
-    </button>
-  {%- endform -%}
+  <product-form data-section-id="{{ section_id }}">
+    {%- form 'product', card_product, id: form_id, class: 'purelane-card-form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+      <input
+        type="hidden"
+        name="id"
+        value="{{ variant.id }}"
+        class="product-variant-id"
+        {% if variant.available == false %}disabled{% endif %}
+      >
+      <button
+        type="submit"
+        name="add"
+        class="purelane-btn purelane-btn-ghost purelane-btn-sm"
+        aria-haspopup="dialog"
+        aria-live="polite"
+        data-sold-out-message="true"
+        {% if variant.available == false %}aria-disabled="true"{% endif %}
+      >
+        <span>
+          {%- if variant.available -%}
+            {{ 'purelane.shop.add_to_cart' | t }}
+          {%- else -%}
+            {{ 'purelane.shop.sold_out' | t }}
+          {%- endif -%}
+        </span>
+        <span class="sold-out-message hidden">{{ 'purelane.shop.sold_out' | t }}</span>
+        {%- render 'loading-spinner' -%}
+      </button>
+    {%- endform -%}
+  </product-form>
 </article>

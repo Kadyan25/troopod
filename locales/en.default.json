@@ -544,7 +544,8 @@
       "add_to_cart": "Add to cart",
       "sold_out": "Sold out",
       "view_details": "View details",
-      "reviews_count": "{{ count }} reviews"
+      "reviews_count": "{{ count }} reviews",
+      "pick_collection": "Select a collection in the theme editor to show products here."
     },
     "combos": {
       "swipe_hint": "Swipe for more combos",

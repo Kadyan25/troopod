@@ -1,0 +1,113 @@
+/* Purelane Shop grid — ported from purelane-homepage.html:1248-1432 (.shelf/.card) */
+
+.purelane-shelf {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 860px) {
+  .purelane-shelf { grid-template-columns: repeat(4, 1fr); }
+}
+
+.purelane-card {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  transition: 0.4s var(--purelane-ease);
+}
+.purelane-card:hover { transform: translateY(-5px); }
+
+.purelane-shot {
+  height: 150px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, rgba(236, 230, 247, 0.12), rgba(75, 58, 143, 0.2));
+  border: 1px solid rgba(236, 230, 247, 0.14);
+}
+.purelane-shot img {
+  max-height: 122px;
+  width: auto;
+  object-fit: contain;
+}
+.purelane-shot__placeholder {
+  height: 108px;
+  width: 100%;
+  color: rgba(236, 230, 247, 0.5);
+  display: grid;
+  place-items: center;
+}
+.purelane-shot__placeholder svg { height: 96px; width: auto; }
+
+.purelane-pill {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  z-index: 2;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(23, 16, 43, 0.6);
+  border: 1px solid rgba(240, 160, 60, 0.32);
+  color: var(--purelane-accent);
+}
+.purelane-pill--soldout {
+  border-color: rgba(236, 230, 247, 0.3);
+  color: var(--purelane-paper-2);
+}
+
+.purelane-card h4 {
+  font-family: 'Purelane Outfit', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--purelane-surface);
+  line-height: 1.2;
+  margin-bottom: 7px;
+}
+.purelane-rate {
+  font-size: 11.5px;
+  color: var(--purelane-paper-2);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.purelane-rate b { color: var(--purelane-accent); font-weight: 700; }
+
+.purelane-pr {
+  margin-top: auto;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.purelane-pr strong { font-family: 'Purelane Outfit', sans-serif; font-size: 18px; color: var(--purelane-surface); font-weight: 700; }
+.purelane-pr s { font-size: 12px; color: var(--purelane-paper-3); }
+.purelane-pr em { font-style: normal; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; color: var(--purelane-accent); }
+
+.purelane-card .purelane-card-form,
+.purelane-card product-form { display: block; width: 100%; }
+.purelane-card .purelane-btn { width: 100%; justify-content: center; }
+
+.purelane-shop-viewall { text-align: center; margin-top: 24px; }
+.purelane-shop-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--purelane-paper-3);
+  font-size: 13px;
+}
+
+@media (max-width: 760px) {
+  .purelane-shot { height: 126px; }
+  .purelane-shot img { max-height: 108px; }
+  .purelane-shot__placeholder { height: 88px; }
+}

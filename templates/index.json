@@ -1,75 +1,62 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "purelane_hero": {
+      "type": "purelane-hero",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "slide_1": {
+          "type": "hero_slide",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "price_label": "Single bottle"
           }
         },
-        "button": {
-          "type": "buttons",
+        "badge_1": {
+          "type": "badge",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "label": "Plant powered",
+            "label_short": "Plant powered",
+            "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z\"></path><path d=\"M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z\"></path></svg>"
+          }
+        },
+        "badge_2": {
+          "type": "badge",
+          "settings": {
+            "label": "Safe for kids & pets",
+            "label_short": "Kids & pet safe",
+            "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3 4.5 6v6.2c0 4.3 3.1 7.6 7.5 8.8 4.4-1.2 7.5-4.5 7.5-8.8V6L12 3Z\"></path><path d=\"m9 12 2.2 2.2L15.4 10\"></path></svg>"
+          }
+        },
+        "badge_3": {
+          "type": "badge",
+          "settings": {
+            "label": "Zero harsh chemicals",
+            "label_short": "Zero harsh chem",
+            "icon": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"8.4\"></circle><path d=\"M6.4 17.6 17.6 6.4\"></path></svg>"
           }
         }
       },
-      "block_order": [
-        "heading",
-        "button"
-      ],
+      "block_order": ["slide_1", "badge_1", "badge_2", "badge_3"],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "heading": "Clean That Lasts",
+        "lede": "Homecare that works on the toughest grime, made from plants. Kind to your home, your family and the world outside it.",
+        "primary_cta_label": "Shop now",
+        "primary_cta_link": "#purelane-shop",
+        "secondary_cta_label": "How it works",
+        "secondary_cta_link": ""
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "purelane_shop": {
+      "type": "purelane-shop",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
+        "kicker": "Bestsellers",
+        "heading": "Loved by 30,000 homes",
         "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
         "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "view_all_label": "View all"
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "purelane_hero",
+    "purelane_shop"
   ]
 }
