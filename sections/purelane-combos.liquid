@@ -13,7 +13,7 @@
 
     {%- assign combo_blocks = section.blocks | where: 'type', 'combo_ref' -%}
     {%- if combo_blocks.size > 0 -%}
-      <div class="purelane-comborail purelane-rv" data-purelane-combo-rail>
+      <div class="purelane-comborail purelane-rv">
         {%- for block in combo_blocks -%}
           {%- liquid
             assign combo = block.settings.combo
