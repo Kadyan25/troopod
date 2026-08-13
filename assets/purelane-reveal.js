@@ -49,4 +49,29 @@
   }
 
   window.PurelaneReveal = { init: init, destroy: destroy, reducedMotion: reduce };
+
+  /**
+   * Auto-wiring for sections that need nothing but reveal-on-scroll: mark
+   * the section root with [data-purelane-reveal] and this handles init on
+   * first paint + shopify:section:load, and teardown on
+   * shopify:section:unload — no per-section boilerplate script needed.
+   * Sections with extra behavior (hero, combos, ...) call init/destroy
+   * themselves instead and don't need this attribute.
+   */
+  function autoInit() {
+    document.querySelectorAll('[data-purelane-reveal]').forEach(init);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', autoInit);
+  } else {
+    autoInit();
+  }
+  document.addEventListener('shopify:section:load', function (event) {
+    var root = event.target.querySelector('[data-purelane-reveal]');
+    if (root) init(root);
+  });
+  document.addEventListener('shopify:section:unload', function (event) {
+    var root = event.target.querySelector('[data-purelane-reveal]');
+    if (root) destroy(root);
+  });
 })();

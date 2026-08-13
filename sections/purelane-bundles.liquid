@@ -1,0 +1,120 @@
+{{ 'purelane-base.css' | asset_url | stylesheet_tag }}
+{{ 'purelane-bundles.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'purelane-reveal.js' | asset_url }}" defer="defer"></script>
+
+{%- comment -%}
+  KNOWN LIMITATION (see build notes): "Build this box" implies real
+  mix-and-match bundle pricing — customer picks N products, cart charges a
+  flat price regardless of which N. Stock Dawn with no apps/Shopify
+  Functions cannot do that. The CTA below routes honestly to a real
+  collection/shop link instead of faking a picker UI. A real implementation
+  needs a Shopify Function-based bundle discount or a bundles app.
+{%- endcomment -%}
+
+<section class="purelane-scope purelane-sec" id="purelane-bundles-{{ section.id }}" data-purelane-reveal>
+  <div class="wrap">
+    <div class="purelane-glass purelane-sec-pad purelane-rv" style="margin-bottom:16px">
+      {%- render 'purelane-section-heading',
+        kicker: section.settings.kicker,
+        heading: section.settings.heading,
+        lede: section.settings.lede
+      -%}
+    </div>
+
+    {%- assign tier_blocks = section.blocks | where: 'type', 'tier_ref' -%}
+    {%- if tier_blocks.size > 0 -%}
+      <div class="purelane-tiers">
+        {%- for block in tier_blocks -%}
+          {%- liquid
+            assign tier = block.settings.tier
+            if tier == blank
+              continue
+            endif
+            assign price = tier.fields.price.value
+            assign compare_at = tier.fields.compare_at_price.value
+            assign count = tier.fields.product_count.value
+            assign per_product = 0
+            if count > 0
+              assign per_product = price | divided_by: count
+            endif
+            assign per_product_money = per_product | money
+            assign samples = tier.fields.sample_products.value
+            assign cta_label = tier.fields.cta_label.value
+            if cta_label == blank
+              assign cta_label = 'purelane.bundles.build_this_box' | t
+            endif
+          -%}
+          <article
+            class="purelane-tier purelane-glass purelane-rv {% if tier.fields.featured.value %}purelane-best{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <span class="purelane-tag">{{ tier.fields.tag.value }}</span>
+
+            {%- if samples.size > 0 -%}
+              <div class="purelane-tierpix {% if samples.size >= 5 %}purelane-five{% endif %}" aria-hidden="true">
+                {%- for product in samples -%}
+                  {%- if product.featured_media -%}
+                    <img class="purelane-pimg" src="{{ product.featured_media | image_url: width: 160 }}" alt="" loading="lazy" width="{{ product.featured_media.width }}" height="{{ product.featured_media.height }}">
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            <div class="purelane-qty">{{ count }}<small>{{ 'purelane.bundles.products_label' | t }}</small></div>
+            {% render 'purelane-price', price: price, compare_at_price: compare_at, variant: 'tier' %}
+            <p class="body-s" style="font-size:12px">{{ 'purelane.bundles.per_product_note' | t: amount: per_product_money }}</p>
+
+            {%- if tier.fields.features.value.size > 0 -%}
+              <ul>
+                {%- for feature in tier.fields.features.value -%}
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"></path></svg>
+                    {{ feature }}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+
+            <a
+              class="purelane-btn {% if tier.fields.featured.value %}purelane-btn-primary{% else %}purelane-btn-ghost{% endif %}"
+              href="{{ section.settings.cta_link | default: '#' }}"
+            >
+              {{ cta_label }}
+              {%- if tier.fields.featured.value -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6"></path></svg>
+              {%- endif -%}
+            </a>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="purelane-shop-empty purelane-rv">{{ 'purelane.bundles.pick_tiers' | t }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Purelane: Bundles",
+  "class": "purelane-bundles-section",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Build your bundle" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "One box. Every room." },
+    { "type": "textarea", "id": "lede", "label": "Supporting copy", "default": "Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way." },
+    { "type": "url", "id": "cta_link", "label": "\"Build this box\" link", "info": "Stock Dawn has no mix-and-match bundle mechanism — point this at a real collection/shop link. See build notes." }
+  ],
+  "blocks": [
+    {
+      "type": "tier_ref",
+      "name": "Bundle tier",
+      "settings": [
+        { "type": "metaobject", "id": "tier", "metaobject_type": "bundle_tier", "label": "Bundle tier entry" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Purelane: Bundles" }
+  ]
+}
+{% endschema %}

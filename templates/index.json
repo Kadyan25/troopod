@@ -53,6 +53,14 @@
         "fine_print": "Inclusive of all taxes · COD available"
       }
     },
+    "purelane_bundles": {
+      "type": "purelane-bundles",
+      "settings": {
+        "kicker": "Build your bundle",
+        "heading": "One box. Every room.",
+        "lede": "Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way."
+      }
+    },
     "purelane_shop": {
       "type": "purelane-shop",
       "settings": {
@@ -67,6 +75,7 @@
   "order": [
     "purelane_hero",
     "purelane_combos",
+    "purelane_bundles",
     "purelane_shop"
   ]
 }

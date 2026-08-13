@@ -13,7 +13,7 @@
   endif
 -%}
 
-<section class="purelane-scope purelane-sec" id="purelane-shop-{{ section.id }}" data-purelane-shop>
+<section class="purelane-scope purelane-sec" id="purelane-shop-{{ section.id }}" data-purelane-reveal>
   <div class="wrap">
     {%- render 'purelane-section-heading',
       kicker: section.settings.kicker,
@@ -41,21 +41,6 @@
     {%- endif -%}
   </div>
 </section>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var root = document.getElementById('purelane-shop-{{ section.id }}');
-    if (root && window.PurelaneReveal) window.PurelaneReveal.init(root);
-  });
-  document.addEventListener('shopify:section:load', function (event) {
-    var root = event.target.querySelector('[data-purelane-shop]');
-    if (root && window.PurelaneReveal) window.PurelaneReveal.init(root);
-  });
-  document.addEventListener('shopify:section:unload', function (event) {
-    var root = event.target.querySelector('[data-purelane-shop]');
-    if (root && window.PurelaneReveal) window.PurelaneReveal.destroy(root);
-  });
-</script>
 
 {% schema %}
 {

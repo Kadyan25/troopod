@@ -555,7 +555,9 @@
     },
     "bundles": {
       "per_product_note": "Flat {{ amount }} per product",
-      "build_this_box": "Build this box"
+      "build_this_box": "Build this box",
+      "products_label": "Products",
+      "pick_tiers": "Add Bundle tier blocks in the theme editor and pick a bundle_tier metaobject entry for each."
     },
     "reviews": {
       "aggregate_rating_html": "<b>{{ rating }}</b> from {{ count }} reviews",
