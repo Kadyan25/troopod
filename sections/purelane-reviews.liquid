@@ -1,0 +1,85 @@
+{{ 'purelane-base.css' | asset_url | stylesheet_tag }}
+{{ 'purelane-reviews.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'purelane-reveal.js' | asset_url }}" defer="defer"></script>
+
+{%- assign review_blocks = section.blocks | where: 'type', 'review_ref' -%}
+
+<section class="purelane-scope purelane-sec" id="purelane-reviews-{{ section.id }}" data-purelane-reveal>
+  <div class="wrap">
+    <div class="purelane-revhead purelane-rv">
+      <span class="purelane-kicker">{{ section.settings.kicker }}</span>
+      <span class="purelane-agg">
+        <span class="purelane-st" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        {{ 'purelane.reviews.aggregate_rating_html' | t: rating: section.settings.aggregate_rating, count: section.settings.review_count }}
+      </span>
+      <span class="purelane-agg">{{ 'purelane.reviews.loved_by_html' | t: count: section.settings.homes_count }}</span>
+    </div>
+  </div>
+
+  {%- if review_blocks.size > 0 -%}
+    <div class="purelane-revrail purelane-rv" aria-label="{{ 'purelane.reviews.aria_label' | t }}">
+      <div class="purelane-revtrack">
+        {%- for i in (1..2) -%}
+          {%- for block in review_blocks -%}
+            {%- liquid
+              assign review = block.settings.review
+              if review == blank
+                continue
+              endif
+            -%}
+            <article
+              class="purelane-glass-2 purelane-rcard"
+              {% if i == 2 %}aria-hidden="true" tabindex="-1"{% endif %}
+              {% if i == 1 %}{{ block.shopify_attributes }}{% endif %}
+            >
+              <div class="purelane-st" aria-hidden="true">
+                {%- for s in (1..5) -%}
+                  {%- if s <= review.fields.stars.value -%}&#9733;{%- else -%}&#9734;{%- endif -%}
+                {%- endfor -%}
+              </div>
+              <h5>{{ review.fields.headline.value }}</h5>
+              <p>{{ review.fields.body.value }}</p>
+              <div class="purelane-who">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"></path></svg>
+                <b>{{ review.fields.author_name.value }}</b>
+                {%- if review.fields.product_label.value != blank -%}
+                  <span>&middot; {{ review.fields.product_label.value }}</span>
+                {%- endif -%}
+              </div>
+            </article>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- else -%}
+    <div class="wrap">
+      <div class="purelane-shop-empty purelane-rv">{{ 'purelane.reviews.pick_reviews' | t }}</div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Purelane: Reviews rail",
+  "class": "purelane-reviews-section",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "That's what they said" },
+    { "type": "number", "id": "aggregate_rating", "label": "Aggregate rating", "default": 4.8 },
+    { "type": "text", "id": "review_count", "label": "Review count (display text)", "default": "8,000+" },
+    { "type": "text", "id": "homes_count", "label": "Homes count (display text)", "default": "12 lakh+" }
+  ],
+  "blocks": [
+    {
+      "type": "review_ref",
+      "name": "Review",
+      "settings": [
+        { "type": "metaobject", "id": "review", "metaobject_type": "review", "label": "Review entry" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Purelane: Reviews rail" }
+  ]
+}
+{% endschema %}

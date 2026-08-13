@@ -44,6 +44,15 @@
         "secondary_cta_link": ""
       }
     },
+    "purelane_reviews": {
+      "type": "purelane-reviews",
+      "settings": {
+        "kicker": "That's what they said",
+        "aggregate_rating": 4.8,
+        "review_count": "8,000+",
+        "homes_count": "12 lakh+"
+      }
+    },
     "purelane_combos": {
       "type": "purelane-combos",
       "settings": {
@@ -74,6 +83,7 @@
   },
   "order": [
     "purelane_hero",
+    "purelane_reviews",
     "purelane_combos",
     "purelane_bundles",
     "purelane_shop"

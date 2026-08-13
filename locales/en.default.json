@@ -561,7 +561,9 @@
     },
     "reviews": {
       "aggregate_rating_html": "<b>{{ rating }}</b> from {{ count }} reviews",
-      "loved_by_html": "Loved by <b>{{ count }}</b> homes"
+      "loved_by_html": "Loved by <b>{{ count }}</b> homes",
+      "aria_label": "Customer reviews",
+      "pick_reviews": "Add Review blocks in the theme editor and pick a review metaobject entry for each."
     }
   }
 }
