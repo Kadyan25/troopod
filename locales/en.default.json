@@ -550,7 +550,8 @@
     "combos": {
       "swipe_hint": "Swipe for more combos",
       "shop_bundle": "Shop bundle",
-      "products_count": "{{ count }} products"
+      "products_count": "{{ count }} products",
+      "pick_combos": "Add Combo blocks in the theme editor and pick a combo metaobject entry for each."
     },
     "bundles": {
       "per_product_note": "Flat {{ amount }} per product",
