@@ -1,0 +1,21 @@
+# Local project docs — never pushed
+CLAUDE.md
+architecture.md
+build-plan.md
+session.md
+issues.md
+handoff.md
+git-state.md
+IMPLEMENTATION.md
+STATE.md
+
+# Reference asset from the assignment, not shippable theme code
+purelane-homepage.html
+
+# Shopify CLI / theme
+.shopify/
+config.yml
+*.log
+node_modules/
+.DS_Store
+Thumbs.db
