@@ -1,4 +1,3 @@
-{{ 'purelane-base.css' | asset_url | stylesheet_tag }}
 {{ 'purelane-reviews.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'purelane-reveal.js' | asset_url }}" defer="defer"></script>
 
@@ -34,16 +33,16 @@
             >
               <div class="purelane-st" aria-hidden="true">
                 {%- for s in (1..5) -%}
-                  {%- if s <= review.fields.stars.value -%}&#9733;{%- else -%}&#9734;{%- endif -%}
+                  {%- if s <= review.stars.value -%}&#9733;{%- else -%}&#9734;{%- endif -%}
                 {%- endfor -%}
               </div>
-              <h5>{{ review.fields.headline.value }}</h5>
-              <p>{{ review.fields.body.value }}</p>
+              <h5>{{ review.headline.value }}</h5>
+              <p>{{ review.body.value }}</p>
               <div class="purelane-who">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"></path></svg>
-                <b>{{ review.fields.author_name.value }}</b>
-                {%- if review.fields.product_label.value != blank -%}
-                  <span>&middot; {{ review.fields.product_label.value }}</span>
+                <b>{{ review.author_name.value }}</b>
+                {%- if review.product_label.value != blank -%}
+                  <span>&middot; {{ review.product_label.value }}</span>
                 {%- endif -%}
               </div>
             </article>

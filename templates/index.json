@@ -6,11 +6,40 @@
         "slide_1": {
           "type": "hero_slide",
           "settings": {
-            "products": ["gid://shopify/Product/8712338374839"],
+            "products": [
+              "tap-cleaner-limescale-remover"
+            ],
             "price_label": "Single bottle",
             "price": 200,
             "compare_at_price": 299,
             "savings_label": "33% off"
+          }
+        },
+        "slide_2": {
+          "type": "hero_slide",
+          "settings": {
+            "products": [
+              "foaming-kitchen-cleaner",
+              "natural-herbal-floor-cleaner"
+            ],
+            "price_label": "Starter box",
+            "price": 349,
+            "compare_at_price": 598,
+            "savings_label": "Save 249"
+          }
+        },
+        "slide_3": {
+          "type": "hero_slide",
+          "settings": {
+            "products": [
+              "non-toxic-toilet-cleaner",
+              "gentle-hydrating-liquid-handwash",
+              "copper-bronze-brass-cleaner"
+            ],
+            "price_label": "Most popular box",
+            "price": 499,
+            "compare_at_price": 897,
+            "savings_label": "Save 398"
           }
         },
         "badge_1": {
@@ -38,7 +67,14 @@
           }
         }
       },
-      "block_order": ["slide_1", "badge_1", "badge_2", "badge_3"],
+      "block_order": [
+        "slide_1",
+        "slide_2",
+        "slide_3",
+        "badge_1",
+        "badge_2",
+        "badge_3"
+      ],
       "settings": {
         "heading": "Clean That Lasts",
         "lede": "Homecare that works on the toughest grime, made from plants. Kind to your home, your family and the world outside it.",
@@ -50,6 +86,45 @@
     },
     "purelane_reviews": {
       "type": "purelane-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review_ref",
+          "settings": {
+            "review": "review-anita"
+          }
+        },
+        "review_2": {
+          "type": "review_ref",
+          "settings": {
+            "review": "review-priya"
+          }
+        },
+        "review_3": {
+          "type": "review_ref",
+          "settings": {
+            "review": "review-sunita"
+          }
+        },
+        "review_4": {
+          "type": "review_ref",
+          "settings": {
+            "review": "review-rohit"
+          }
+        },
+        "review_5": {
+          "type": "review_ref",
+          "settings": {
+            "review": "review-verified-buyer"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4",
+        "review_5"
+      ],
       "settings": {
         "kicker": "That's what they said",
         "aggregate_rating": 4.8,
@@ -59,6 +134,45 @@
     },
     "purelane_combos": {
       "type": "purelane-combos",
+      "blocks": {
+        "combo_1": {
+          "type": "combo_ref",
+          "settings": {
+            "combo": "kitchen-essentials"
+          }
+        },
+        "combo_2": {
+          "type": "combo_ref",
+          "settings": {
+            "combo": "bathroom-deep-clean"
+          }
+        },
+        "combo_3": {
+          "type": "combo_ref",
+          "settings": {
+            "combo": "complete-home-bundle"
+          }
+        },
+        "combo_4": {
+          "type": "combo_ref",
+          "settings": {
+            "combo": "hard-water-solution-kit"
+          }
+        },
+        "combo_5": {
+          "type": "combo_ref",
+          "settings": {
+            "combo": "shine-and-polish-kit"
+          }
+        }
+      },
+      "block_order": [
+        "combo_1",
+        "combo_2",
+        "combo_3",
+        "combo_4",
+        "combo_5"
+      ],
       "settings": {
         "kicker": "Pre-built to save you money",
         "heading": "Best selling combos",
@@ -68,10 +182,36 @@
     },
     "purelane_bundles": {
       "type": "purelane-bundles",
+      "blocks": {
+        "tier_1": {
+          "type": "tier_ref",
+          "settings": {
+            "tier": "tier-starter"
+          }
+        },
+        "tier_2": {
+          "type": "tier_ref",
+          "settings": {
+            "tier": "tier-most-popular"
+          }
+        },
+        "tier_3": {
+          "type": "tier_ref",
+          "settings": {
+            "tier": "tier-whole-home"
+          }
+        }
+      },
+      "block_order": [
+        "tier_1",
+        "tier_2",
+        "tier_3"
+      ],
       "settings": {
         "kicker": "Build your bundle",
         "heading": "One box. Every room.",
-        "lede": "Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way."
+        "lede": "Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way.",
+        "cta_link": "shopify://collections/purelane"
       }
     },
     "purelane_shop": {
@@ -84,11 +224,67 @@
         "show_view_all": true,
         "view_all_label": "View all"
       }
+    },
+    "purelane_ingredients": {
+      "type": "purelane-ingredients",
+      "blocks": {
+        "ing_1": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Coconut",
+            "description": "Plant-derived cleansers that lift grease",
+            "art": "<svg viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"#ece6f7\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"50\" cy=\"62\" r=\"25\"/><path d=\"M31 53c9-6 29-6 38 0\" stroke=\"#f0a03c\"/><path d=\"M41 63c4 8 14 8 18 0\" opacity=\".55\"/><path d=\"M50 37V25\"/><path d=\"M50 27C42 18 30 16 21 21c5 10 17 13 29 6Z\" stroke=\"#f0a03c\"/><path d=\"M50 27c8-9 20-11 29-6-5 10-17 13-29 6Z\" stroke=\"#f0a03c\"/></svg>"
+          }
+        },
+        "ing_2": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Orange peel",
+            "description": "Natural degreaser and fresh citrus lift",
+            "art": "<svg viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"#ece6f7\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"45\" cy=\"58\" r=\"23\"/><path d=\"M45 35v46M22 58h46\" opacity=\".4\"/><path d=\"M29 42 61 74M61 42 29 74\" opacity=\".26\"/><path d=\"M62 28c13-1 20 10 15 20-4 8-15 9-19 2\" stroke=\"#f0a03c\"/><path d=\"M45 34c-3-8 2-15 10-16 1 9-3 15-10 16Z\" stroke=\"#f0a03c\"/></svg>"
+          }
+        },
+        "ing_3": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Soap nut",
+            "description": "A traditional plant foaming agent",
+            "art": "<svg viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"#ece6f7\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"36\" cy=\"66\" r=\"16\"/><circle cx=\"64\" cy=\"69\" r=\"14\"/><circle cx=\"50\" cy=\"43\" r=\"14\"/><path d=\"M50 29V17\"/><path d=\"M50 21c-8-8-18-8-23-2 7 8 17 10 23 2Z\" stroke=\"#f0a03c\"/><path d=\"M31 60a5 5 0 0 1 4-4\" opacity=\".6\"/><path d=\"M46 38a5 5 0 0 1 4-4\" opacity=\".6\"/></svg>"
+          }
+        },
+        "ing_4": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Neem",
+            "description": "Time-tested antibacterial from the tree",
+            "art": "<svg viewBox=\"0 0 100 100\" fill=\"none\" stroke=\"#ece6f7\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 82C36 66 58 44 82 20\" stroke=\"#f0a03c\"/><path d=\"M27 73c-6-7-4-15 3-18 4 7 3 14-3 18Z\"/><path d=\"M31 69c8-4 15 0 16 8-8 2-14-1-16-8Z\"/><path d=\"M41 59c-6-7-4-16 3-19 4 7 3 15-3 19Z\"/><path d=\"M45 55c9-4 16 0 17 8-8 2-15-1-17-8Z\"/><path d=\"M56 44c-6-7-4-16 3-19 4 7 3 15-3 19Z\"/><path d=\"M60 40c9-4 16 0 17 8-8 2-15-1-17-8Z\"/><path d=\"M70 30c-5-7-3-15 4-18 3 7 2 14-4 18Z\"/></svg>"
+          }
+        },
+        "ing_5": {
+          "type": "ingredient",
+          "settings": {
+            "name": "Lemongrass",
+            "description": "Clean fragrance with nothing synthetic",
+            "art": "<svg viewBox=\"0 0 100 100\" fill=\"none\"><g fill=\"#ece6f7\" opacity=\".88\"><path d=\"M50 88C44 62 39 42 24 15c15 27 22 47 29 73Z\"/><path d=\"M52 88C50 60 50 39 44 9c11 29 13 50 12 79Z\"/><path d=\"M54 88C56 60 60 40 74 13c-11 28-15 48-16 75Z\"/><path d=\"M56 88C60 64 68 48 86 27c-14 22-21 38-26 61Z\"/><path d=\"M48 88C44 66 36 50 18 30c14 21 22 36 27 58Z\"/></g><path d=\"M50 88h6\" stroke=\"#f0a03c\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></svg>"
+          }
+        }
+      },
+      "block_order": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4",
+        "ing_5"
+      ],
+      "settings": {
+        "heading": "Sourced from nature"
+      }
     }
   },
   "order": [
     "purelane_hero",
     "purelane_reviews",
+    "purelane_ingredients",
     "purelane_combos",
     "purelane_bundles",
     "purelane_shop"

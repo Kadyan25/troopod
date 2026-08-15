@@ -18,11 +18,18 @@
 
   Usage:
   {% render 'purelane-price', product: card_product, variant: 'card' %}
-  {% render 'purelane-price', price: combo.fields.price.value, compare_at_price: combo.fields.compare_at_price.value, variant: 'combo' %}
+  {% render 'purelane-price', price: combo.price.value, compare_at_price: combo.compare_at_price.value, variant: 'combo' %}
 {% endcomment %}
 {%- liquid
   assign display_variant = variant | default: 'card'
 
+  comment
+    Every price here is in the currency's subunit (cents), which is what the
+    `money` filter formats. A variant's own price already is, and so is a
+    `money` metafield's .value — it looks like an object but coerces to
+    subunits in arithmetic. A plain number section setting does NOT, so those
+    call sites convert before rendering (see purelane-hero.liquid).
+  endcomment
   if product
     assign target = product.selected_or_first_available_variant | default: product
     assign resolved_price = target.price

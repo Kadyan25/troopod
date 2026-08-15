@@ -1,4 +1,3 @@
-{{ 'purelane-base.css' | asset_url | stylesheet_tag }}
 {{ 'purelane-combos.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'purelane-reveal.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'purelane-combos.js' | asset_url }}" defer="defer"></script>
@@ -20,22 +19,22 @@
             if combo == blank
               continue
             endif
-            assign products = combo.fields.products.value
-            assign captions = combo.fields.item_captions.value
-            assign price = combo.fields.price.value
-            assign compare_at = combo.fields.compare_at_price.value
+            assign products = combo.products.value
+            assign captions = combo.item_captions.value
+            assign price = combo.price.value
+            assign compare_at = combo.compare_at_price.value
             assign variant_ids = ''
           -%}
           <article
-            class="purelane-combo purelane-glass {% if combo.fields.featured.value %}purelane-hero-combo{% endif %}"
+            class="purelane-combo purelane-glass {% if combo.featured.value %}purelane-hero-combo{% endif %}"
             {{ block.shopify_attributes }}
           >
             <div class="purelane-tray">
-              {%- if combo.fields.savings_label.value != blank -%}
-                <span class="purelane-save">{{ combo.fields.savings_label.value }}</span>
+              {%- if combo.savings_label.value != blank -%}
+                <span class="purelane-save">{{ combo.savings_label.value }}</span>
               {%- endif -%}
-              {%- if combo.fields.flag.value != blank -%}
-                <span class="purelane-flag">{{ combo.fields.flag.value }}</span>
+              {%- if combo.flag.value != blank -%}
+                <span class="purelane-flag">{{ combo.flag.value }}</span>
               {%- endif -%}
               <div class="purelane-stack">
                 {%- for product in products -%}
@@ -62,16 +61,16 @@
               </div>
             </div>
             <div class="purelane-body">
-              <h3>{{ combo.fields.title.value }}</h3>
+              <h3>{{ combo.title.value }}</h3>
               <div class="purelane-cnt">{{ 'purelane.combos.products_count' | t: count: products.size }}</div>
-              {%- if combo.fields.description.value != blank -%}
-                <p class="purelane-inc">{{ combo.fields.description.value }}</p>
+              {%- if combo.description.value != blank -%}
+                <p class="purelane-inc">{{ combo.description.value }}</p>
               {%- endif -%}
               {% render 'purelane-price', price: price, compare_at_price: compare_at, variant: 'combo' %}
               <div class="purelane-fine">{{ section.settings.fine_print }}</div>
               <button
                 type="button"
-                class="purelane-btn {% if combo.fields.featured.value %}purelane-btn-primary{% else %}purelane-btn-ghost{% endif %} purelane-combo-add"
+                class="purelane-btn {% if combo.featured.value %}purelane-btn-primary{% else %}purelane-btn-ghost{% endif %} purelane-combo-add"
                 data-variant-ids="{{ variant_ids | remove_last: ',' }}"
               >
                 <span>{{ 'purelane.combos.shop_bundle' | t }}</span>

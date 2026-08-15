@@ -98,6 +98,24 @@ const METAOBJECT_DEFINITION_CREATE = `
   }
 `;
 
+const METAOBJECT_DEFINITION_BY_TYPE = `
+  query DefinitionByType($type: String!) {
+    metaobjectDefinitionByType(type: $type) {
+      id
+      access { storefront }
+    }
+  }
+`;
+
+const METAOBJECT_DEFINITION_UPDATE_ACCESS = `
+  mutation UpdateMetaobjectAccess($id: ID!, $definition: MetaobjectDefinitionUpdateInput!) {
+    metaobjectDefinitionUpdate(id: $id, definition: $definition) {
+      metaobjectDefinition { id type access { storefront } }
+      userErrors { field message code }
+    }
+  }
+`;
+
 function alreadyExists(userErrors) {
   return userErrors.some((e) => e.code === 'TAKEN' || /already exists/i.test(e.message));
 }
@@ -129,11 +147,40 @@ async function provisionProductMetafields(defs) {
   }
 }
 
+// Definitions created before storefront access was set stay at NONE, so an
+// existing definition gets patched rather than skipped.
+async function ensureStorefrontAccess(type) {
+  const found = await gql(METAOBJECT_DEFINITION_BY_TYPE, { type });
+  const existing = found.metaobjectDefinitionByType;
+  if (!existing) {
+    console.log('  already exists, but could not be read back to check access');
+    return;
+  }
+  if (existing.access.storefront === 'PUBLIC_READ') {
+    console.log('  already exists, storefront access already PUBLIC_READ');
+    return;
+  }
+  const data = await gql(METAOBJECT_DEFINITION_UPDATE_ACCESS, {
+    id: existing.id,
+    definition: { access: { storefront: 'PUBLIC_READ' } },
+  });
+  const { metaobjectDefinition, userErrors } = data.metaobjectDefinitionUpdate;
+  if (metaobjectDefinition) {
+    console.log(`  already exists, storefront access ${existing.access.storefront} → PUBLIC_READ`);
+  } else {
+    console.log('  already exists, FAILED to update storefront access:', userErrors);
+  }
+}
+
 async function provisionMetaobjects(defs) {
   for (const def of defs) {
     const input = {
       type: def.type,
       name: def.name,
+      // Storefront access defaults to NONE. Without PUBLIC_READ the entries
+      // exist in the admin but Liquid resolves them to nil, so the sections
+      // render their empty states with no error to explain why.
+      access: { storefront: 'PUBLIC_READ' },
       fieldDefinitions: def.fieldDefinitions.map((f) => ({
         key: f.key,
         name: f.name,
@@ -153,7 +200,7 @@ async function provisionMetaobjects(defs) {
     if (metaobjectDefinition) {
       console.log('  created:', metaobjectDefinition.id);
     } else if (alreadyExists(userErrors)) {
-      console.log('  already exists, skipping');
+      await ensureStorefrontAccess(def.type);
     } else {
       console.log('  FAILED:', userErrors);
     }

@@ -1,4 +1,3 @@
-{{ 'purelane-base.css' | asset_url | stylesheet_tag }}
 {{ 'purelane-bundles.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'purelane-reveal.js' | asset_url }}" defer="defer"></script>
 
@@ -30,25 +29,31 @@
             if tier == blank
               continue
             endif
-            assign price = tier.fields.price.value
-            assign compare_at = tier.fields.compare_at_price.value
-            assign count = tier.fields.product_count.value
+            assign price = tier.price.value
+            assign compare_at = tier.compare_at_price.value
+            assign count = tier.product_count.value
+            comment
+              `price` is already in subunits (see purelane-price.liquid), so
+              divide there and keep the result in subunits for `money`. The
+              times: 1.0 forces float division — plain integer division would
+              drop the remainder before rounding.
+            endcomment
             assign per_product = 0
             if count > 0
-              assign per_product = price | divided_by: count
+              assign per_product = price | times: 1.0 | divided_by: count | round
             endif
             assign per_product_money = per_product | money
-            assign samples = tier.fields.sample_products.value
-            assign cta_label = tier.fields.cta_label.value
+            assign samples = tier.sample_products.value
+            assign cta_label = tier.cta_label.value
             if cta_label == blank
               assign cta_label = 'purelane.bundles.build_this_box' | t
             endif
           -%}
           <article
-            class="purelane-tier purelane-glass purelane-rv {% if tier.fields.featured.value %}purelane-best{% endif %}"
+            class="purelane-tier purelane-glass purelane-rv {% if tier.featured.value %}purelane-best{% endif %}"
             {{ block.shopify_attributes }}
           >
-            <span class="purelane-tag">{{ tier.fields.tag.value }}</span>
+            <span class="purelane-tag">{{ tier.tag.value }}</span>
 
             {%- if samples.size > 0 -%}
               <div class="purelane-tierpix {% if samples.size >= 5 %}purelane-five{% endif %}" aria-hidden="true">
@@ -64,9 +69,9 @@
             {% render 'purelane-price', price: price, compare_at_price: compare_at, variant: 'tier' %}
             <p class="body-s" style="font-size:12px">{{ 'purelane.bundles.per_product_note' | t: amount: per_product_money }}</p>
 
-            {%- if tier.fields.features.value.size > 0 -%}
+            {%- if tier.features.value.size > 0 -%}
               <ul>
-                {%- for feature in tier.fields.features.value -%}
+                {%- for feature in tier.features.value -%}
                   <li>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"></path></svg>
                     {{ feature }}
@@ -76,11 +81,11 @@
             {%- endif -%}
 
             <a
-              class="purelane-btn {% if tier.fields.featured.value %}purelane-btn-primary{% else %}purelane-btn-ghost{% endif %}"
+              class="purelane-btn {% if tier.featured.value %}purelane-btn-primary{% else %}purelane-btn-ghost{% endif %}"
               href="{{ section.settings.cta_link | default: '#' }}"
             >
               {{ cta_label }}
-              {%- if tier.fields.featured.value -%}
+              {%- if tier.featured.value -%}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13m-5-6 6 6-6 6"></path></svg>
               {%- endif -%}
             </a>
