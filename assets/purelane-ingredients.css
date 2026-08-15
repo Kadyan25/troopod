@@ -1,0 +1,41 @@
+/* Purelane Ingredients — ported from purelane-homepage.html:1013-1103 */
+
+.purelane-ing { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+@media (min-width: 760px) {
+  .purelane-ing { grid-template-columns: repeat(5, 1fr); }
+}
+
+.purelane-ing-i { text-align: center; padding: 16px 12px; position: relative; }
+@media (min-width: 760px) {
+  .purelane-ing-i + .purelane-ing-i::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14%;
+    bottom: 14%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(75, 58, 143, 0.2), transparent);
+  }
+}
+
+.purelane-ing-i .purelane-art { height: 88px; display: grid; place-items: center; margin-bottom: 12px; }
+.purelane-ing-i .purelane-art svg { height: 84px; width: auto; }
+.purelane-ing-i h4 {
+  font-family: 'Purelane Outfit', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--purelane-surface);
+  margin-bottom: 6px;
+}
+.purelane-ing-i p { font-size: 12.2px; color: var(--purelane-paper-2); line-height: 1.5; }
+
+/*
+  The art is pasted as-is, still carrying the prototype's V1 stroke colours.
+  Recolour it here rather than editing every path, so a merchant can paste in
+  new line art in the same style and have it match automatically.
+*/
+.purelane-ing-i .purelane-art svg { stroke: #0d5b52; }
+.purelane-ing-i .purelane-art svg [stroke='#f0a03c'] { stroke: var(--purelane-accent); }
+.purelane-ing-i .purelane-art svg [fill='#ece6f7'] { fill: #0d5b52; }

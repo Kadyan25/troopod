@@ -9,12 +9,19 @@
   var instances = new WeakMap();
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function initScenes(root) {
-    var stage = root.querySelector('[data-purelane-scenes]');
+  // The scenes stage lives in the layout, not in this section, so look it up
+  // on the document rather than inside the section root.
+  function initScenes() {
+    var stage = document.querySelector('[data-purelane-scenes]');
     if (!stage) return null;
     var scenes = [].slice.call(stage.querySelectorAll('.purelane-scene'));
+    var layers = [].slice.call(stage.querySelectorAll('.purelane-wl'));
     var zones = [].slice.call(document.querySelectorAll('[data-scene]'));
+    var depths = [0.05, 0.09, 0.03, 0.02];
     var current = 1;
+    var raf = null;
+    var mx = 0;
+    var my = 0;
 
     function setScene(n) {
       if (n === current) return;
@@ -22,24 +29,60 @@
       scenes.forEach(function (s, i) {
         s.classList.toggle('purelane-on', i + 1 === n);
       });
+      // Drives the depth-based opacity of the water layers (see purelane-base.css)
+      stage.setAttribute('data-d', String(n));
     }
     function pickScene() {
       var focus = window.scrollY + window.innerHeight * 0.5;
       var n = 1;
       for (var i = 0; i < zones.length; i++) {
-        if (zones[i].offsetTop <= focus) {
+        var top = 0;
+        var el = zones[i];
+        while (el) {
+          top += el.offsetTop;
+          el = el.offsetParent;
+        }
+        if (top <= focus) {
           n = parseInt(zones[i].getAttribute('data-scene'), 10) || n;
         }
       }
       setScene(n);
     }
-    if (reduce) return null;
-    window.addEventListener('scroll', pickScene, { passive: true });
-    window.addEventListener('resize', pickScene, { passive: true });
-    pickScene();
+    function frame() {
+      raf = null;
+      var y = window.scrollY || window.pageYOffset;
+      for (var i = 0; i < layers.length; i++) {
+        var d = depths[i] || 0.05;
+        layers[i].style.setProperty('--px', (mx * d * 130).toFixed(1) + 'px');
+        layers[i].style.setProperty('--py', (-y * d + my * d * 90).toFixed(1) + 'px');
+      }
+      pickScene();
+    }
+    function onScroll() {
+      if (!raf) raf = requestAnimationFrame(frame);
+    }
+    function onMouse(e) {
+      mx = (e.clientX / window.innerWidth - 0.5) * 2;
+      my = (e.clientY / window.innerHeight - 0.5) * 2;
+      onScroll();
+    }
+
+    if (reduce) {
+      // Still place the page in the right scene, just without the motion.
+      pickScene();
+      return null;
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    // Pointer parallax is desktop-only in the prototype, and pointless on touch.
+    var wide = window.matchMedia('(min-width: 1024px)').matches;
+    if (wide) window.addEventListener('mousemove', onMouse, { passive: true });
+    frame();
     return function () {
-      window.removeEventListener('scroll', pickScene);
-      window.removeEventListener('resize', pickScene);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (wide) window.removeEventListener('mousemove', onMouse);
+      if (raf) cancelAnimationFrame(raf);
     };
   }
 
@@ -50,7 +93,7 @@
     var mobileNav = root.querySelector('[data-purelane-nav-mobile]');
     var cleanup = [];
 
-    var stopScenes = initScenes(root);
+    var stopScenes = initScenes();
     if (stopScenes) cleanup.push(stopScenes);
 
     if (header) {

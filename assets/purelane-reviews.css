@@ -19,7 +19,7 @@
   color: var(--purelane-paper-2);
 }
 .purelane-revhead .purelane-agg b { font-family: 'Purelane Outfit', sans-serif; font-size: 16px; color: var(--purelane-accent); letter-spacing: 0; }
-.purelane-revhead .purelane-st { color: var(--purelane-accent); font-size: 12px; letter-spacing: 0.16em; }
+.purelane-revhead .purelane-st { color: #7a9c1e; font-size: 12px; letter-spacing: 0.16em; }
 
 .purelane-revrail {
   overflow: hidden;
@@ -43,12 +43,12 @@
 }
 
 .purelane-rcard { flex: 0 0 auto; width: 284px; padding: 15px 17px; border-radius: 18px; }
-.purelane-rcard .purelane-st { color: var(--purelane-accent); font-size: 10.5px; letter-spacing: 0.2em; margin-bottom: 9px; }
+.purelane-rcard .purelane-st { color: #7a9c1e; font-size: 10.5px; letter-spacing: 0.2em; margin-bottom: 9px; }
 .purelane-rcard h5 { font-family: 'Purelane Outfit', sans-serif; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--purelane-surface); margin-bottom: 7px; }
 .purelane-rcard p { font-size: 12.6px; color: var(--purelane-paper-2); line-height: 1.52; margin-bottom: 11px; }
 .purelane-who { display: flex; align-items: center; gap: 7px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--purelane-paper-3); }
-.purelane-who b { color: var(--purelane-surface); font-weight: 700; }
-.purelane-who svg { width: 12px; height: 12px; color: var(--purelane-accent); flex: 0 0 auto; }
+.purelane-who b { color: var(--purelane-teal-ink); font-weight: 700; }
+.purelane-who svg { width: 12px; height: 12px; color: var(--purelane-leaf); flex: 0 0 auto; }
 
 @media (max-width: 760px) {
   .purelane-rcard { width: 250px; padding: 13px 14px; }

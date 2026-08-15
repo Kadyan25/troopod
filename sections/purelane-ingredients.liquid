@@ -1,0 +1,55 @@
+{{ 'purelane-ingredients.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'purelane-reveal.js' | asset_url }}" defer="defer"></script>
+
+<section class="purelane-scope purelane-sec" id="purelane-ingredients-{{ section.id }}" data-purelane-reveal data-scene="2">
+  <div class="wrap">
+    <div class="purelane-glass purelane-sec-pad purelane-rv">
+      {%- render 'purelane-section-heading', heading: section.settings.heading -%}
+
+      {%- assign items = section.blocks | where: 'type', 'ingredient' -%}
+      {%- if items.size > 0 -%}
+        <div class="purelane-ing">
+          {%- for block in items -%}
+            <div class="purelane-ing-i" {{ block.shopify_attributes }}>
+              {%- if block.settings.art != blank -%}
+                <div class="purelane-art" aria-hidden="true">{{ block.settings.art }}</div>
+              {%- endif -%}
+              <h4>{{ block.settings.name }}</h4>
+              {%- if block.settings.description != blank -%}
+                <p>{{ block.settings.description }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="purelane-shop-empty purelane-rv">{{ 'purelane.ingredients.pick_items' | t }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Purelane: Ingredients",
+  "class": "purelane-ingredients-section",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Sourced from nature" }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name" },
+        { "type": "textarea", "id": "description", "label": "Description" },
+        { "type": "html", "id": "art", "label": "Line art (inline SVG)", "info": "Pasted SVG. Strokes are recoloured by CSS, so keep the original stroke values." }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    { "name": "Purelane: Ingredients" }
+  ]
+}
+{% endschema %}

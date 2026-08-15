@@ -319,9 +319,19 @@
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
+
+    {{ 'purelane-base.css' | asset_url | stylesheet_tag }}
   </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+    <div class="purelane-scenes" id="purelaneScenes" data-purelane-scenes data-d="1" aria-hidden="true">
+      <div class="purelane-scene purelane-s1 purelane-on"></div>
+      <div class="purelane-scene purelane-s2"></div>
+      <div class="purelane-scene purelane-s3"></div>
+      <div class="purelane-scene purelane-s4"></div>
+      {% render 'purelane-water' %}
+    </div>
+
     <a class="skip-to-content-link button visually-hidden" href="#MainContent">
       {{ 'accessibility.skip_to_text' | t }}
     </a>

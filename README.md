@@ -11,9 +11,11 @@ Five production Shopify sections, built on a clean Dawn v16.0.0 baseline, portin
 | Best-selling combos | `sections/purelane-combos.liquid` | Done |
 | Bundles | `sections/purelane-bundles.liquid` | Done |
 | Reviews rail | `sections/purelane-reviews.liquid` | Done |
-| Header (nav, ticker, shared background) | `sections/purelane-header.liquid` | Done (bonus) |
+| Header (nav, ticker) | `sections/purelane-header.liquid` | Done (bonus) |
+| Ingredients grid | `sections/purelane-ingredients.liquid` | Done (bonus) |
+| Page background (scenes + water layers) | `snippets/purelane-water.liquid` | Done |
 
-All five required sections are wired into `templates/index.json` in the prototype's own page order (Hero → Reviews → Combos → Bundles → Shop). The header wasn't part of the required five, but I added it after seeing the page live with stock Dawn's header sitting on top of it — the mismatch was bad enough it wasn't a fair test of the actual sections, so I built it. Other bonus sections from the prototype (ingredients, pillars, proof/stats, full-range strip, why-bundles, categories, trust bar, signup, footer, sticky CTA) were not built.
+Everything is wired into `templates/index.json` in the prototype's own page order (Hero → Reviews → Ingredients → Combos → Bundles → Shop). The header and ingredients grid weren't part of the required five — I added them because without them the page didn't read as the same design. Still not built: pillars, proof/stats, full-range strip, why-bundles, categories, trust bar, signup, footer, sticky CTA.
 
 ## Setup
 
@@ -35,7 +37,7 @@ All five required sections are wired into `templates/index.json` in the prototyp
 - Two full CSS themes in one file. A dark "V1" block, then a light "V2" block that always overrides it. V1's colors never actually render — it's dead code. I only ported the V2 (light-on-dark) palette.
 - The shop grid renders its first 4 products twice — once as placeholder art, once as hand-drawn SVG bottles. Looks like leftover work from building the prototype, not an intentional 8-card design. My shop grid just shows whatever products are in the connected collection, no duplication.
 - Nothing in the file is real data. Every price, rating, review count, combo, and bundle is a hardcoded string. Fine for a prototype, but all of it needed a real home in Shopify.
-- The animated background (scenes, 4 layered SVG filters, scroll crossfade, mouse parallax, per-section scene tracking) is heavy and spans the whole page. I skipped it — see "what I'd do with more time" below.
+- The animated background (4 scene gradients, 4 blend-mode SVG turbulence layers, bubbles, vignette, scroll crossfade, mouse parallax) is the expensive part of the page. It's ported in full, with the cost contained — see below.
 
 ### What I changed, and why
 - Combos, bundle tiers, and reviews are metaobjects, not hardcoded blocks. Blocks would've been simpler to wire up, but this is content a marketing person should be able to add themselves from Content → Metaobjects, without opening the theme editor. Full reasoning in `architecture.md`.
@@ -43,14 +45,14 @@ All five required sections are wired into `templates/index.json` in the prototyp
 - Add-to-cart is real everywhere. Shop cards use Dawn's own `product-form` element (same cart/cart-drawer wiring Dawn already ships, didn't rebuild it). Combo cards add every product in the combo in one request through the cart API, since the plain form only takes one variant at a time.
 - Self-hosted fonts instead of the prototype's Google Fonts link, so there's one less external request.
 - All my CSS variables are prefixed (`--purelane-*`) instead of the prototype's bare `--ink`/`--brand`/etc., so nothing clashes with Dawn's own variables.
-- One shared background behind every section instead of each section carrying its own flat color. This is a simplified stand-in for the prototype's `.scenes`/`.water` system — same 4 gradient tones, crossfaded on scroll, but without the 4 layered SVG turbulence filters and mouse parallax, which are genuinely expensive and were cut for performance (see architecture.md).
+- One shared background behind every section, in the layout rather than in any section, so it survives a merchant removing or reordering sections. Path data and filter values are the prototype's, unchanged. Two things I did change: the original repeats the same SVG `<defs>` ids in all four layers, so every `url(#id)` silently resolved to the first one — ids are namespaced per layer now. And the whole thing is inert under `prefers-reduced-motion`, with the layers fading out with scroll depth as the original does.
 
 ### The one thing I didn't build around
 Bundles' "Build this box" and Combos' "Shop bundle" both imply real mix-and-match pricing — pick any products, pay one flat price. Stock Dawn with no apps can't do that, it needs a Shopify Function or a paid bundles app. So instead of building a picker that doesn't actually work, both buttons do something real: Bundles links to a real collection you set, Combos adds the real products to a real cart at their real prices (not the flat combo price — that's the same missing piece). Both say what they actually do, in the editor and on the page, not buried.
 
 ### What I'd do with more time
-- Port the full animated water/turbulence layers on top of the simplified background I did build, with the perf budget written up in `architecture.md` (throttle the scroll handler, fewer SVG filters running at once).
-- Build the remaining bonus sections — trust bar and ingredients grid first, cheapest and most visible.
+- Measure the water layers properly. They're rAF-throttled and cut off under reduced motion, but I haven't put real Core Web Vitals numbers against them on a mid-range phone.
+- Build the remaining bonus sections — trust bar next, cheapest and most visible.
 - Translate the new locale strings into Dawn's other ~30 languages (`theme check` flags these as missing right now, since I only filled in English).
 - A real reviews app instead of hand-entered review metaobjects, real ratings source instead of manually set rating/review_count fields.
 - Actual pixel comparisons and Core Web Vitals numbers now that there's a real store connected — everything up to that point was checked statically (`theme check`, cross-checking CSS classes by hand, tracing through the editor load/unload code).
@@ -63,7 +65,16 @@ Bundles' "Build this box" and Combos' "Shop bundle" both imply real mix-and-matc
 
 The biggest one only showed up against the real store: the shop grid used `collection.products | slice: 0, limit` to cap how many products render. That's valid Liquid, passes `theme check` clean, and is a completely reasonable-looking way to limit an array — except `collection.products` isn't a plain array, it's a paginated object, and `slice` on it silently returned a blank product for every card instead of erroring where the actual problem was. Every product card rendered a placeholder image and an empty title, and the page died at the add-to-cart form with "product form must be given a product" — a real Shopify error, but pointing at the wrong line. Took directly comparing against Dawn's own stock collection page (which rendered all 8 products fine, proving the data and Shopify's side were correct) to isolate that the bug was specifically in how I was looping, not the data. The fix is Dawn's own idiom: `for product in collection.products limit: n`, not a piped `slice`. Nothing local would've caught this — it needed a real collection with real products behind it.
 
-**What I'd systematize:** run that class cross-check after every section, not just once at the end — it would've caught the kicker bug right away instead of later. Same idea for a filter-order check on `t`/`money`/`date` chains, since that's a mistake AI-written Liquid makes specifically — looks fine on both ends, valid syntax, wrong once you actually read what it does. And I'd get a real store connected before writing a single section, not after — the metaobject/metafield provisioning script, seed products, and a real collection all should exist first. Most of what went wrong in this build (the `min`/`max` validation Shopify doesn't support, the `collection.products` iteration bug) only surfaced once real data was actually behind the page, and no amount of local linting or careful reading would've caught either one — they needed the real API and a real render to fail loudly.
+The worst one was a plain reading failure, and it's worth being blunt about. The prototype ships two complete palettes — a dark V1 block, then a light "V2 — brand colours" block that overrides it unconditionally. I spotted that trap early enough to write it down in my own notes as a thing to watch. Then I built the entire theme off V1 anyway. Every token, every glass panel, every badge and pill was the wrong half of the file, and it stayed wrong until someone looked at the two pages side by side and said the colours don't match. Reading a file and noticing a problem is not the same as acting on it, and nothing in my process connected the two.
+
+Four more that only a real render would show:
+
+- Dawn's `base.css` hides empty elements (`div:empty { display: none }`). The background's gradient layers and vignette are empty by design, so all of them silently vanished and only the container's base colour showed. Nothing errors; the page just renders the wrong colour.
+- Dawn's body is `display: flex`, and `base.css` puts a `z-index` on the header section group. A flex item with a z-index creates a stacking context even at `position: static`, which trapped the page-wide `z-index: -1` background inside the header and painted it over the entire page. The page looked like a blank green rectangle with a working navbar.
+- Shopify resource settings in JSON templates store **handles**, not GIDs. I wrote GIDs. Metaobject and product references resolved to blank with no error and no warning — sections just quietly rendered their empty states.
+- A `money` metafield's `.value` already coerces to subunits; a plain number setting doesn't. Mixing them put prices out by 100× — $49,900.00 instead of $499.00.
+
+**What I'd systematize:** every one of these is invisible to `theme check` and invisible to reading the code. So: get a real store, real products and real metaobjects standing before writing a single section, then look at the rendered page after every section instead of at the end. Add a diff pass against the source design that compares computed values — background colours, type scale, spacing — rather than trusting that I ported the right numbers. And when I notice something odd in a source file, turn it into a checklist item immediately, because writing it in a notes file did nothing to stop me building on top of it.
 
 ## Deliverables checklist
 

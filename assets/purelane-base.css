@@ -26,21 +26,30 @@
   src: url('purelane-outfit.woff2') format('woff2-variations'), url('purelane-outfit.woff2') format('woff2');
 }
 
+/*
+  Palette is the prototype's "VERSION 2 — brand colours (light)" block
+  (purelane-homepage.html:636+), not the V1 dark block above it. The file
+  ships both; V2 is unconditional and later in the cascade, so V1's colours
+  never actually render. Pale mint ground, #4b3a8f teal ink, #c9761d leaf
+  accent — only V2 is ported here.
+*/
 :root {
-  --purelane-ink: #17102b;
-  --purelane-deep: #241a3d;
+  --purelane-ink: #f4f0fb;
+  --purelane-deep: #e2daf3;
   --purelane-brand: #4b3a8f;
   --purelane-brand-lt: #6b55b8;
-  --purelane-paper: #ece6f7;
-  --purelane-paper-2: rgba(236, 230, 247, 0.74);
-  --purelane-paper-3: rgba(236, 230, 247, 0.52);
-  --purelane-accent: #f0a03c;
+  --purelane-paper: #241a3d;
+  --purelane-paper-2: rgba(36, 26, 61, 0.78);
+  --purelane-paper-3: rgba(36, 26, 61, 0.56);
+  --purelane-accent: #b8701c;
   --purelane-accent-2: #c9761d;
-  --purelane-surface: #faf7fd;
-  --purelane-g-bg: linear-gradient(158deg, rgba(236, 230, 247, 0.15), rgba(75, 58, 143, 0.2) 58%, rgba(23, 16, 43, 0.28));
-  --purelane-g-line: rgba(236, 230, 247, 0.22);
-  --purelane-g-shadow: 0 26px 74px rgba(18, 12, 34, 0.44);
-  --purelane-g-inset: inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  --purelane-leaf: #4f7d10;
+  --purelane-teal-ink: #01423b;
+  --purelane-surface: #17102b;
+  --purelane-g-bg: linear-gradient(158deg, rgba(255, 255, 255, 0.8), rgba(236, 230, 247, 0.56) 58%, rgba(222, 212, 240, 0.5));
+  --purelane-g-line: rgba(75, 58, 143, 0.16);
+  --purelane-g-shadow: 0 22px 54px rgba(58, 44, 112, 0.13);
+  --purelane-g-inset: inset 0 1px 0 rgba(255, 255, 255, 0.92);
   --purelane-r: 26px;
   --purelane-r-sm: 16px;
   --purelane-maxw: 1180px;
@@ -87,7 +96,7 @@
 }
 
 .purelane-scope :focus-visible {
-  outline: 2px solid var(--purelane-accent);
+  outline: 2px solid var(--purelane-leaf);
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -123,10 +132,10 @@
 .purelane-panel-head { text-align: center; margin-bottom: 26px; }
 .purelane-panel-head .d2 { margin-bottom: 12px; }
 .purelane-panel-head .purelane-rule { margin: 0 auto; justify-content: center; max-width: 240px; }
-.purelane-panel-head .purelane-rule i:first-child { background: linear-gradient(90deg, transparent, rgba(236, 230, 247, 0.44)); }
+.purelane-panel-head .purelane-rule i:first-child { background: linear-gradient(90deg, transparent, rgba(75, 58, 143, 0.34)); }
 
 .purelane-rule { display: flex; align-items: center; gap: 13px; margin: 0 0 20px; max-width: 270px; }
-.purelane-rule i { height: 1px; flex: 1; background: linear-gradient(90deg, rgba(236, 230, 247, 0.44), transparent); }
+.purelane-rule i { height: 1px; flex: 1; background: linear-gradient(90deg, rgba(75, 58, 143, 0.34), transparent); }
 .purelane-rule svg { width: 16px; height: 16px; color: var(--purelane-accent); flex: 0 0 auto; }
 
 /* ---------- glass panels ---------- */
@@ -146,15 +155,15 @@
   inset: 0;
   pointer-events: none;
   border-radius: inherit;
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0.16), transparent 30%, transparent 72%, rgba(240, 160, 60, 0.07));
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.55), transparent 32%, transparent 74%, rgba(201, 118, 29, 0.06));
 }
 .purelane-glass-2 {
-  background: linear-gradient(158deg, rgba(236, 230, 247, 0.1), rgba(0, 48, 46, 0.22));
+  background: linear-gradient(158deg, rgba(255, 255, 255, 0.66), rgba(236, 230, 247, 0.44));
   backdrop-filter: blur(18px) saturate(135%);
   -webkit-backdrop-filter: blur(18px) saturate(135%);
-  border: 1px solid rgba(236, 230, 247, 0.16);
+  border: 1px solid rgba(75, 58, 143, 0.13);
   border-radius: var(--purelane-r);
-  box-shadow: 0 18px 48px rgba(18, 12, 34, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: 0 16px 38px rgba(58, 44, 112, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.86);
   position: relative;
   overflow: hidden;
 }
@@ -181,19 +190,19 @@
 }
 .purelane-btn svg { width: 15px; height: 15px; flex: 0 0 auto; }
 .purelane-btn-primary {
-  background: linear-gradient(135deg, var(--purelane-accent-2), #5d8d1c);
-  color: #08211a;
-  box-shadow: 0 12px 30px rgba(201, 118, 29, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  background: linear-gradient(135deg, #00706a, #004b46);
+  color: #f4fdf6;
+  box-shadow: 0 12px 26px rgba(0, 80, 74, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
-.purelane-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(201, 118, 29, 0.44), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+.purelane-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 36px rgba(0, 80, 74, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.28); }
 .purelane-btn-ghost {
-  background: rgba(236, 230, 247, 0.1);
-  border: 1px solid rgba(236, 230, 247, 0.3);
+  background: rgba(255, 255, 255, 0.66);
+  border: 1px solid rgba(75, 58, 143, 0.22);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  color: var(--purelane-surface);
+  color: var(--purelane-teal-ink);
 }
-.purelane-btn-ghost:hover { background: rgba(236, 230, 247, 0.18); transform: translateY(-2px); }
+.purelane-btn-ghost:hover { background: rgba(255, 255, 255, 0.9); transform: translateY(-2px); }
 .purelane-btn-sm { height: 38px; padding: 0 18px; font-size: 11px; letter-spacing: 0.14em; }
 .purelane-btn[disabled],
 .purelane-btn[aria-disabled='true'] {
@@ -234,4 +243,115 @@
     transition-duration: 0.01ms !important;
   }
   .purelane-rv { opacity: 1; transform: none; filter: none; }
+}
+
+/*
+  Shared full-page background: a simplified stand-in for the prototype's
+  .scenes/.water system (4 flat gradients crossfaded by scroll position via
+  purelane-header.js's data-scene tracking) instead of porting the 4 layered
+  SVG feTurbulence animations, which are expensive and were explicitly cut
+  for performance (see architecture.md and README "what I'd do with more
+  time"). This still gives one continuous background across every section
+  instead of each section carrying its own flat color.
+
+  This lives in the layout, as a direct child of <body>, NOT inside a section.
+  Dawn's body is display:flex and base.css gives .shopify-section-group-header-group
+  a z-index, which makes that group a stacking context even though it's
+  position:static — a flex item with a z-index always is. Nesting a
+  position:fixed, z-index:-1 element inside it traps the background in that
+  context, so it paints over the entire page instead of behind it.
+*/
+.purelane-scenes { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: #eee7fb; pointer-events: none; }
+/*
+  Dawn's base.css hides empty elements outright (`div:empty { display: none }`),
+  and these gradient layers carry no content by design. The descendant selector
+  is deliberate — it out-specifies `div:empty` so the layers actually paint.
+*/
+.purelane-scenes .purelane-scene { display: block; position: absolute; inset: 0; opacity: 0; transition: opacity 1.1s ease; }
+.purelane-scenes .purelane-scene.purelane-on { opacity: 1; }
+.purelane-s1 { background: linear-gradient(178deg, #fbfffb 0%, #eafaec 24%, #d6f1dc 54%, #bfe8ca 100%); }
+.purelane-s2 { background: linear-gradient(178deg, #f6fdf7 0%, #e3f7e7 26%, #cbedd4 58%, #b2e2c2 100%); }
+.purelane-s3 { background: linear-gradient(178deg, #f0fbf2 0%, #d9f2df 28%, #bde6c8 60%, #a2d9b6 100%); }
+.purelane-s4 { background: linear-gradient(178deg, #e9f8ec 0%, #cdedd6 30%, #addcbe 62%, #8ecdaa 100%); }
+
+/* ---------- water cinematics (prototype .water / .bub / .vig) ---------- */
+.purelane-water { position: absolute; inset: -14% -10%; pointer-events: none; transition: opacity 1.2s ease; }
+.purelane-wl { position: absolute; inset: 0; will-change: transform; translate: var(--px, 0) var(--py, 0); }
+.purelane-wl .purelane-sv { width: 100%; height: 100%; }
+.purelane-wl-a { mix-blend-mode: soft-light; opacity: 1; animation: purelane-drift-a 34s linear infinite; }
+.purelane-wl-a .purelane-sv { filter: contrast(1.25); }
+.purelane-wl-b { mix-blend-mode: overlay; opacity: 0.66; animation: purelane-drift-b 23s linear infinite; }
+.purelane-wl-c { mix-blend-mode: overlay; opacity: 0.6; animation: purelane-shaft-sway 19s ease-in-out infinite; }
+.purelane-wl-s { mix-blend-mode: overlay; opacity: 0.72; animation: purelane-surface 11s ease-in-out infinite; transform-origin: 50% 0; }
+
+@keyframes purelane-drift-a {
+  0% { transform: translate3d(-3%, 0, 0) scale(1.06); }
+  50% { transform: translate3d(3%, -1.6%, 0) scale(1.13); }
+  100% { transform: translate3d(-3%, 0, 0) scale(1.06); }
+}
+@keyframes purelane-drift-b {
+  0% { transform: translate3d(4%, 1%, 0) scale(1.1); }
+  50% { transform: translate3d(-4%, -1%, 0) scale(1.04); }
+  100% { transform: translate3d(4%, 1%, 0) scale(1.1); }
+}
+@keyframes purelane-shaft-sway {
+  0% { transform: translate3d(-2%, 0, 0) skewX(0deg); opacity: 0.34; }
+  50% { transform: translate3d(2%, 0, 0) skewX(2.4deg); opacity: 0.6; }
+  100% { transform: translate3d(-2%, 0, 0) skewX(0deg); opacity: 0.34; }
+}
+@keyframes purelane-surface {
+  0% { transform: translateY(0) scaleY(1); opacity: 0.55; }
+  50% { transform: translateY(-1.4%) scaleY(1.14); opacity: 0.82; }
+  100% { transform: translateY(0) scaleY(1); opacity: 0.55; }
+}
+
+/* Layers thin out as the page gets deeper — driven by data-d, set in purelane-header.js */
+.purelane-scenes[data-d='1'] .purelane-water { opacity: 1; }
+.purelane-scenes[data-d='2'] .purelane-water { opacity: 0.9; }
+.purelane-scenes[data-d='3'] .purelane-water { opacity: 0.76; }
+.purelane-scenes[data-d='4'] .purelane-water { opacity: 0.58; }
+.purelane-scenes[data-d='1'] .purelane-wl-s { opacity: 0.7; }
+.purelane-scenes[data-d='2'] .purelane-wl-s,
+.purelane-scenes[data-d='3'] .purelane-wl-s,
+.purelane-scenes[data-d='4'] .purelane-wl-s { opacity: 0; }
+
+.purelane-bub { position: absolute; inset: 0; overflow: hidden; }
+.purelane-bub span {
+  position: absolute;
+  bottom: -6%;
+  left: var(--x);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  border: 1px solid rgba(75, 58, 143, 0.26);
+  background: radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 64%);
+  animation: purelane-rise var(--dur) linear infinite;
+  animation-delay: var(--dly);
+  opacity: 0;
+}
+@keyframes purelane-rise {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  12% { opacity: 0.7; }
+  88% { opacity: 0.5; }
+  100% { transform: translate3d(var(--drift), -116vh, 0); opacity: 0; }
+}
+
+/* Empty by design, so it needs the same `div:empty` escape as the scene layers */
+.purelane-scenes .purelane-vig {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(126% 88% at 50% 26%, transparent 42%, rgba(75, 58, 143, 0.07) 80%, rgba(0, 80, 74, 0.16) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 20%, transparent 70%, rgba(0, 84, 78, 0.1) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .purelane-scene { transition: none; }
+  .purelane-wl-a,
+  .purelane-wl-b,
+  .purelane-wl-c,
+  .purelane-wl-s,
+  .purelane-bub span { animation: none; }
 }

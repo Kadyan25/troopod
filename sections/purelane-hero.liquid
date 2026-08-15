@@ -1,4 +1,3 @@
-{{ 'purelane-base.css' | asset_url | stylesheet_tag }}
 {{ 'purelane-hero.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'purelane-reveal.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'purelane-hero.js' | asset_url }}" defer="defer"></script>
@@ -90,15 +89,37 @@
                     height="{{ product.featured_media.height }}"
                     loading="{% if forloop.parentloop.first %}eager{% else %}lazy{% endif %}"
                   >
+                {%- else -%}
+                  {%- comment -%}
+                    Without this the stage collapses to empty space on any product
+                    that has no image yet — the same placeholder the shop card uses,
+                    so the hero keeps its shape while photography is still missing.
+                  {%- endcomment -%}
+                  <div
+                    class="purelane-hp purelane-hp--placeholder purelane-{{ layer }} purelane-{{ depth }}"
+                    role="img"
+                    aria-label="{{ product.title | escape }}"
+                  >
+                    {{ 'product-1' | placeholder_svg_tag: 'purelane-placeholder-svg' }}
+                  </div>
                 {%- endif -%}
               {%- endfor -%}
               {%- if block.settings.price_label != blank -%}
+                {%- comment -%}
+                  These two settings are plain numbers a merchant types in whole
+                  currency units (499, not 49900), but `money` formats subunits.
+                  Convert here rather than making the merchant enter cents.
+                {%- endcomment -%}
+                {%- liquid
+                  assign slide_price = block.settings.price | times: 100 | round
+                  assign slide_compare = block.settings.compare_at_price | times: 100 | round
+                -%}
                 <div class="purelane-glass-2 purelane-ptag">
                   <span class="purelane-lbl">{{ block.settings.price_label }}</span>
                   <span class="purelane-val">
-                    <strong>{{ block.settings.price | money }}</strong>
-                    {%- if block.settings.compare_at_price > block.settings.price -%}
-                      <s>{{ block.settings.compare_at_price | money }}</s>
+                    <strong>{{ slide_price | money }}</strong>
+                    {%- if slide_compare > slide_price -%}
+                      <s>{{ slide_compare | money }}</s>
                     {%- endif -%}
                   </span>
                   {%- if block.settings.savings_label != blank -%}
