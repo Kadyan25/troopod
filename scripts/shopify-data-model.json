@@ -32,7 +32,7 @@
       "description": "A curated multi-product bundle at a fixed promotional price, shown in the Best-selling combos rail.",
       "fieldDefinitions": [
         { "key": "title", "name": "Title", "type": "single_line_text_field", "required": true },
-        { "key": "products", "name": "Products", "type": "list.product_reference", "required": true, "validations": [{ "name": "min", "value": "2" }, { "name": "max", "value": "3" }] },
+        { "key": "products", "name": "Products", "type": "list.product_reference", "required": true, "description": "Pick 2-3 products for this combo — not enforced by Shopify at the field level for reference lists, so keep it to 2-3 by convention when filling entries in." },
         { "key": "item_captions", "name": "Item captions", "type": "list.single_line_text_field", "description": "One short caption per product, same order as Products, e.g. \"Cuts grease instantly\"." },
         { "key": "price", "name": "Price", "type": "money", "required": true },
         { "key": "compare_at_price", "name": "Compare-at price", "type": "money" },
