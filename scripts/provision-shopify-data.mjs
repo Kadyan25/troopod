@@ -15,7 +15,8 @@
  *   1. Create a private/custom app in the dev store's admin
  *      (Settings > Apps > Develop apps) with these Admin API scopes:
  *      write_products, read_products, write_metaobjects, read_metaobjects,
- *      write_metaobject_definitions, read_metaobject_definitions.
+ *      write_metaobject_definitions, read_metaobject_definitions,
+ *      read_locations, write_inventory (the last two are for scripts/seed-products.mjs).
  *   2. Copy .env.example to .env, fill in the store domain and the app's
  *      Admin API access token. Never commit .env (it's gitignored).
  *   3. node scripts/provision-shopify-data.mjs --dry-run   (review first)

@@ -6,7 +6,11 @@
         "slide_1": {
           "type": "hero_slide",
           "settings": {
-            "price_label": "Single bottle"
+            "products": ["gid://shopify/Product/8712338374839"],
+            "price_label": "Single bottle",
+            "price": 200,
+            "compare_at_price": 299,
+            "savings_label": "33% off"
           }
         },
         "badge_1": {
@@ -75,6 +79,7 @@
       "settings": {
         "kicker": "Bestsellers",
         "heading": "Loved by 30,000 homes",
+        "collection": "purelane",
         "products_to_show": 8,
         "show_view_all": true,
         "view_all_label": "View all"
