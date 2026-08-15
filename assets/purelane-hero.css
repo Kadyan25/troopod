@@ -7,7 +7,6 @@
   display: flex;
   align-items: flex-end;
   padding: 150px 0 var(--purelane-sec-y);
-  background: linear-gradient(178deg, #1ea38d 0%, #0b8578 22%, #017069 48%, #4b3a8f 74%, #01524e 100%);
 }
 .purelane-hero::before {
   content: '';

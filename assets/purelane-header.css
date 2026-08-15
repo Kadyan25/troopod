@@ -1,0 +1,153 @@
+/* Purelane header — ported from purelane-homepage.html:887-940 (ticker + nav) */
+
+/*
+  Shared full-page background: a simplified stand-in for the prototype's
+  .scenes/.water system (4 flat gradients crossfaded by scroll position via
+  purelane-header.js's data-scene tracking) instead of porting the 4 layered
+  SVG feTurbulence animations, which are expensive and were explicitly cut
+  for performance (see architecture.md and README "what I'd do with more
+  time"). This still gives one continuous background across every section
+  instead of each section carrying its own flat color.
+*/
+.purelane-scenes { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: #01524e; }
+.purelane-scene { position: absolute; inset: 0; opacity: 0; transition: opacity 1.1s ease; }
+.purelane-scene.purelane-on { opacity: 1; }
+.purelane-s1 { background: linear-gradient(178deg, #1ea38d 0%, #0b8578 22%, #017069 48%, #4b3a8f 74%, #01524e 100%); }
+.purelane-s2 { background: linear-gradient(178deg, #12907f 0%, #04756e 26%, #4b3a8f 58%, #01514d 100%); }
+.purelane-s3 { background: linear-gradient(178deg, #067c71 0%, #00625d 30%, #014e4a 64%, #023c39 100%); }
+.purelane-s4 { background: linear-gradient(178deg, #036359 0%, #014b46 32%, #013431 66%, #012422 100%); }
+@media (prefers-reduced-motion: reduce) {
+  .purelane-scene { transition: none; }
+}
+
+.purelane-ticker {
+  position: relative;
+  z-index: 40;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(23, 16, 43, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(236, 230, 247, 0.1);
+  color: var(--purelane-paper-2);
+}
+.purelane-track {
+  display: inline-flex;
+  gap: 40px;
+  padding: 9px 20px;
+  animation: purelane-tick 30s linear infinite;
+}
+@keyframes purelane-tick {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+header[data-purelane-header] {
+  position: fixed;
+  top: 38px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0 14px;
+  transition: top 0.4s var(--purelane-ease);
+}
+header[data-purelane-header].purelane-up { top: 10px; }
+.purelane-navpill {
+  max-width: var(--purelane-maxw);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 14px;
+  border-radius: 999px;
+}
+.purelane-brand { display: flex; align-items: center; gap: 11px; flex: 0 0 auto; }
+.purelane-brand .purelane-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  background: linear-gradient(150deg, rgba(240, 160, 60, 0.26), rgba(75, 58, 143, 0.42));
+  border: 1px solid rgba(236, 230, 247, 0.24);
+  color: var(--purelane-accent-2);
+}
+.purelane-brand .purelane-mark svg { width: 23px; height: 23px; }
+.purelane-txt { line-height: 1.05; }
+.purelane-n1 {
+  display: block;
+  font-family: 'Purelane Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 16.5px;
+  line-height: 1.06;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--purelane-surface);
+}
+.purelane-n2 { display: block; font-size: 8.5px; font-weight: 600; line-height: 1.3; letter-spacing: 0.28em; text-transform: uppercase; color: var(--purelane-paper-3); }
+
+.purelane-nav { display: none; gap: 26px; margin: 0 auto; font-size: 13.5px; font-weight: 500; }
+.purelane-nav a { color: var(--purelane-paper-2); padding: 6px 0; position: relative; transition: 0.3s; }
+.purelane-nav a::after { content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 1.5px; background: var(--purelane-accent); transition: right 0.35s var(--purelane-ease); }
+.purelane-nav a:hover { color: var(--purelane-surface); }
+.purelane-nav a:hover::after { right: 0; }
+
+.purelane-navtools { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.purelane-ico { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: var(--purelane-paper-2); transition: 0.3s; position: relative; }
+.purelane-ico:hover { background: rgba(236, 230, 247, 0.14); color: var(--purelane-surface); }
+.purelane-ico svg { width: 18px; height: 18px; }
+.purelane-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--purelane-accent-2);
+  color: #08211a;
+  font-size: 9.5px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  padding: 0 4px;
+}
+.purelane-burger { display: grid; }
+
+@media (max-width: 600px) {
+  .purelane-ico.purelane-hide-s { display: none; }
+  .purelane-brand .purelane-mark { width: 34px; height: 34px; }
+  .purelane-n1 { font-size: 14.5px; }
+  .purelane-n2 { font-size: 7.6px; letter-spacing: 0.2em; }
+  .purelane-navpill { gap: 10px; padding: 8px 10px; }
+}
+@media (min-width: 1024px) {
+  .purelane-nav { display: flex; }
+  .purelane-burger { display: none; }
+}
+
+.purelane-nav-mobile {
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  max-width: var(--purelane-maxw);
+  margin: 8px auto 0;
+  padding: 10px;
+  border-radius: 20px;
+}
+.purelane-nav-mobile.purelane-open { display: flex; }
+.purelane-nav-mobile a {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--purelane-paper-2);
+}
+.purelane-nav-mobile a:hover { background: rgba(236, 230, 247, 0.1); color: var(--purelane-surface); }
+@media (min-width: 1024px) {
+  .purelane-nav-mobile { display: none !important; }
+}

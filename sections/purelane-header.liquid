@@ -1,0 +1,100 @@
+{{ 'purelane-base.css' | asset_url | stylesheet_tag }}
+{{ 'purelane-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'purelane-header.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign ticker_items = section.blocks | where: 'type', 'ticker_item'
+  assign cart_count = cart.item_count
+-%}
+
+<div class="purelane-scope">
+  <div class="purelane-scenes" id="purelaneScenes" data-purelane-scenes aria-hidden="true">
+    <div class="purelane-scene purelane-s1 purelane-on"></div>
+    <div class="purelane-scene purelane-s2"></div>
+    <div class="purelane-scene purelane-s3"></div>
+    <div class="purelane-scene purelane-s4"></div>
+  </div>
+
+  {%- if ticker_items.size > 0 -%}
+    <div class="purelane-ticker" aria-hidden="true">
+      <div class="purelane-track">
+        {%- for i in (1..2) -%}
+          {%- for block in ticker_items -%}
+            <span>{{ block.settings.text }}</span>
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <header id="purelane-hdr-{{ section.id }}" data-purelane-header>
+    <div class="purelane-navpill purelane-glass">
+      <a class="purelane-brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }} home">
+        <span class="purelane-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3 20.5 8v8L12 21 3.5 16V8L12 3Z"></path>
+            <path d="M12 12 20.5 8M12 12v9M12 12 3.5 8"></path>
+          </svg>
+        </span>
+        <span class="purelane-txt">
+          <span class="purelane-n1">{{ section.settings.brand_name | default: shop.name }}</span>
+          <span class="purelane-n2">{{ section.settings.brand_tagline }}</span>
+        </span>
+      </a>
+
+      {%- if section.settings.menu != blank -%}
+        <nav class="purelane-nav" aria-label="Main">
+          {%- for link in section.settings.menu.links -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+
+      <div class="purelane-navtools">
+        <a class="purelane-ico purelane-hide-s" href="{{ routes.search_url }}" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+        </a>
+        <a class="purelane-ico purelane-hide-s" href="{{ routes.account_url }}" aria-label="Account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"></circle><path d="M5 20c0-3.6 3.1-5.6 7-5.6s7 2 7 5.6"></path></svg>
+        </a>
+        <a class="purelane-ico" href="{{ routes.cart_url }}" aria-label="Cart, {{ cart_count }} items">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h2l2.2 10.4a1.6 1.6 0 0 0 1.6 1.3h7.6a1.6 1.6 0 0 0 1.6-1.3L20.5 9H6.4"></path><circle cx="10" cy="20.5" r="1.1"></circle><circle cx="17.5" cy="20.5" r="1.1"></circle></svg>
+          <span class="purelane-dot">{{ cart_count }}</span>
+        </a>
+        <button class="purelane-ico purelane-burger" type="button" aria-label="Menu" aria-expanded="false" data-purelane-burger>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    {%- if section.settings.menu != blank -%}
+      <nav class="purelane-nav-mobile purelane-glass" data-purelane-nav-mobile aria-label="Main, mobile" hidden>
+        {%- for link in section.settings.menu.links -%}
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+  </header>
+</div>
+
+{% schema %}
+{
+  "name": "Purelane: Header",
+  "class": "purelane-header-section",
+  "tag": "header",
+  "settings": [
+    { "type": "text", "id": "brand_name", "label": "Brand name", "info": "Defaults to the store name if left blank" },
+    { "type": "text", "id": "brand_tagline", "label": "Brand tagline", "default": "Clean, simply" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+  ],
+  "blocks": [
+    {
+      "type": "ticker_item",
+      "name": "Ticker message",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Message" }
+      ]
+    }
+  ]
+}
+{% endschema %}

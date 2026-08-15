@@ -6,23 +6,18 @@
 {%- liquid
   assign collection = section.settings.collection
   assign limit = section.settings.products_to_show
-  if collection != blank
-    assign products = collection.products | slice: 0, limit
-  else
-    assign products = empty
-  endif
 -%}
 
-<section class="purelane-scope purelane-sec" id="purelane-shop-{{ section.id }}" data-purelane-reveal>
+<section class="purelane-scope purelane-sec" id="purelane-shop-{{ section.id }}" data-purelane-reveal data-scene="3">
   <div class="wrap">
     {%- render 'purelane-section-heading',
       kicker: section.settings.kicker,
       heading: section.settings.heading
     -%}
 
-    {%- if products.size > 0 -%}
+    {%- if collection != blank and collection.products.size > 0 -%}
       <div class="purelane-shelf">
-        {%- for product in products -%}
+        {%- for product in collection.products limit: limit -%}
           {% render 'purelane-card-product', card_product: product, section_id: section.id %}
         {%- endfor -%}
       </div>
